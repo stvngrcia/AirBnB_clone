@@ -15,7 +15,7 @@ class BaseModel:
         '''
             Initialize public instance attributes.
             Attributes:
-                id: id of instance
+                id: id of an instance
                 created_at: Time of instance creation
                 updated_at: Time of instance update
         '''
