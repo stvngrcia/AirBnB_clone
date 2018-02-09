@@ -4,6 +4,7 @@
 '''
 import json
 
+
 class FileStorage:
     '''
         Serializes instances to JSON file and deserializes to JSON file
@@ -31,14 +32,14 @@ class FileStorage:
             serializes __objects attribute to JSON file.
         '''
         with open(FileStorage.__file_path, mode='w', encoding="UTF8") as fd:
-           json.dump(FileStorage.__objects,fd)
+            json.dump(FileStorage.__objects, fd, indent=4)
 
     def reload(self):
         '''
             deserializes the JSON file to __objects.
         '''
         try:
-            with open(FileStorage.__file_path, mode='r', encoding="UTF8") as fd:
+            with open(FileStorage.__file_path, encoding="UTF8") as fd:
                 FileStorage.__objects = json.load(fd)
         except FileNotFoundError:
             pass
