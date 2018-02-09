@@ -9,6 +9,7 @@ from models.base_model import BaseModel
 from io import StringIO
 import sys
 
+
 class TestBase(unittest.TestCase):
     '''
         Testing the base class model.
@@ -31,7 +32,7 @@ class TestBase(unittest.TestCase):
         '''
             Checks that the type of the id is string.
         '''
-        self.assertEqual("<class 'str'>",str(type(self.my_model.id)))
+        self.assertEqual("<class 'str'>", str(type(self.my_model.id)))
 
     def test_ids_differ(self):
         '''
@@ -73,7 +74,6 @@ class TestBase(unittest.TestCase):
 
         cap = capture_out.getvalue().split(" ")
         self.assertEqual(cap[0], "[BaseModel]")
-
 
         self.assertEqual(cap[1], "({})".format(inst_id))
 
