@@ -8,6 +8,7 @@ import unittest
 from models.base_model import BaseModel
 from io import StringIO
 import sys
+import datetime
 
 
 class TestBase(unittest.TestCase):
@@ -105,3 +106,49 @@ class TestBase(unittest.TestCase):
         '''
         tmp = self.my_model.to_dict()
         self.assertEqual("<class 'str'>", str(type(tmp["created_at"])))
+
+    def test_kwargs_instantiation(self):
+        '''
+            Test that an instance is created using the
+            key value pair.
+        '''
+        my_model_dict = self.my_model.to_dict()
+        new_model = BaseModel(**my_model_dict)
+        self.assertEqual(new_model.id, self.my_model.id)
+
+    def test_type_created_at(self):
+        '''
+            Test that the new_model's updated_at
+            data type is datetime.
+        '''
+        my_model_dict = self.my_model.to_dict()
+        new_model = BaseModel(my_model_dict)
+        self.assertTrue(isinstance(new_model.created_at, datetime.datetime))
+
+    def test_type_updated_at(self):
+        '''
+            Test that the new_model's created_at
+            data type is datetime.
+        '''
+        my_model_dict = self.my_model.to_dict()
+        new_model = BaseModel(my_model_dict)
+        self.assertTrue(isinstance(new_model.updated_at, datetime.datetime))
+
+    def test_compare_dict(self):
+        '''
+            Test that the new_model's and my_model's
+            dictionary values are same.
+        '''
+        my_model_dict = self.my_model.to_dict()
+        new_model = BaseModel(**my_model_dict)
+        new_model_dict = new_model.to_dict()
+        self.assertEqual(my_model_dict, new_model_dict)
+
+    def test_instance_diff(self):
+        '''
+            Test that the my_model and new_model are
+            not the same instance.
+        '''
+        my_model_dict = self.my_model.to_dict()
+        new_model = BaseModel(my_model_dict)
+        self.assertNotEqual(self.my_model, new_model)
