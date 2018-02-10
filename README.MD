@@ -29,16 +29,16 @@ or to use the non-interactive mode run:
 
 #### Commands
 
-Commands | Description
--------- | -----------
-**help** or **?**| Displays the documented commands.
+Commands | Description | Usage
+-------- | -----------  --------
+**help** or **?**| Displays the documented commands. | **help**
 **quit**     | Exits the program.
-**EOF**      | Ends the program. Used when files are passed into the program.
-**create** \<class_name\> | Creates a new instance of the \<class_name\>. Creates a Json file with the object representation. and prints the id of created object.
-**show** \<class_name class_id\>     | Prints the string representation of an instancebased on the class name and id.
-**destroy** \<class_name class_id\> | Deletes and instance base on the class name and id.
-
-
+**EOF**      | Ends the program. Used when files are passed into the program. | **quit**
+**create**  | Creates a new instance of the \<class_name\>. Creates a Json file with the object | representation. and prints the id of created object. | **create** \<class_name\>
+**show**    | Prints the string representation of an instancebased on the class name and id. | **show** \<class_name class_id\>
+**destroy** | Deletes and instance base on the class name and id. | **destroy** \<class_name class_id\>
+**all** | Prints all string representation of all instances based or not on the class name | **all** or **all** \<class_name class_id\>
+**update** | Updates an instance based on the class name and id by adding or updating attribute | **update** \<class_name class_id key value\>
 
 ## Tests
 
