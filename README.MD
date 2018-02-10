@@ -52,4 +52,4 @@ from the root directory.
 
 ## Bugs
 
-+ When the line is empty in the console it will attempt to run the previous command
++ No known bugs at this time.
