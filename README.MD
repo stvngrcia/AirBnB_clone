@@ -34,6 +34,8 @@ Commands | Description
 help or ?| Displays the documented commands.
 quit     | Exits the program.
 EOF      | Ends the program. Used when files are passed into the program.
+create \<class_name\> | Creates a new instance of the \<class_name\>. Creates a Json file with the object representation. and prints the id of created object.
+show \<class_name class_id\>     | Prints the string representation of an instancebased on the class name and id.
 
 
 
