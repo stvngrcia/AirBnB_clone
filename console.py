@@ -3,6 +3,7 @@
     Implementing the console for the HBnB project.
 '''
 import cmd
+from models.base_model import BaseModel
 
 
 class HBNDCommand(cmd.Cmd):
@@ -25,6 +26,21 @@ class HBNDCommand(cmd.Cmd):
         self.emptyline()
         exit(0)
 
+    def do_create(self, args):
+        '''
+            Create a new instance of class BaseModel and saves it
+            to the JSON file.
+        '''
+        if len(args) == 0:
+            print("** class name missing **")
+            return
+        try:
+            args = args.split(" ")
+            new_instance = eval(args[0])()
+            new_instance.save()
+
+        except:
+            print("** class doesn't exist **")
 
 if __name__ == "__main__":
     HBNDCommand().cmdloop()
