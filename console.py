@@ -157,5 +157,11 @@ class HBNDCommand(cmd.Cmd):
         setattr(obj_value, args[2], args[3])
         storage.save()
 
+    def emptyline(self):
+        '''
+            Prevents printing anything when an empty line is passed.
+        '''
+        pass
+
 if __name__ == "__main__":
     HBNDCommand().cmdloop()
