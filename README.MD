@@ -53,3 +53,4 @@ from the root directory.
 ## Bugs
 
 + When the line is empty in the console it will attempt to run the previous command
++ matches any string when comparing
