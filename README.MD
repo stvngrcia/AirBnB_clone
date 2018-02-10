@@ -21,7 +21,7 @@ The Command Interpreter is used to manage the whole application's functionality 
 
 To launch the console application in interactive mode simply run:
 
-```./console.py ```
+```./console.py ````
 
 or to use the non-interactive mode run:
 
@@ -29,7 +29,11 @@ or to use the non-interactive mode run:
 
 #### Commands
 
-This section will be updated soon.
+Commands | Description
+-------- | -----------
+help or ?| Displays the documented commands.
+quit     | Exits the program.
+EOF      | Ends the program. Used when files are passed into the program.
 
 
 
