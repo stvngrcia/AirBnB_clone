@@ -50,17 +50,18 @@ class HBNDCommand(cmd.Cmd):
             the class name and id given as args.
         '''
         args = args.split(" ")
-        if len(args) == 1:
+        if len(args) == 1 and len(args[0]) == 0:
             print("** class name missing **")
             return
-        if len(args) == 2:
+        if len(args) == 1:
             print("** instance id missing **")
             return
         storage = FileStorage()
         storage.reload()
         obj_dict = storage.all()
-        st_obj_dict = str(obj_dict)
-        if args[0] not in st_obj_dict:
+        try:
+            eval(args[0])
+        except NameError:
             print("** class doesn't exist **")
             return
         key = args[0] + "." + args[1]
@@ -87,11 +88,11 @@ class HBNDCommand(cmd.Cmd):
         storage = FileStorage()
         storage.reload()
         obj_dict = storage.all()
-        st_obj_dict = str(obj_dict)
-        if class_name not in st_obj_dict:
+        try:
+            eval(class_name)
+        except NameError:
             print("** class doesn't exist **")
             return
-
         key = class_name + "." + class_id
         try:
             del obj_dict[key]
@@ -107,12 +108,54 @@ class HBNDCommand(cmd.Cmd):
         storage = FileStorage()
         storage.reload()
         objects = storage.all()
-        if args not in str(objects):
+        try:
+            if len(args) != 0:
+                eval(args)
+        except NameError:
             print("** class doesn't exist **")
             return
-
         for key, val in objects.items():
             print(val)
+
+    def do_update(self, args):
+        '''
+            Update an instance based on the class name and id
+            sent as args.
+        '''
+        storage = FileStorage()
+        storage.reload()
+        args = args.split(" ")
+        if len(args) == 1 and len(args[0]) == 0:
+            print("** class name missing **")
+            return
+        elif len(args) == 1:
+            print("** instance id missing **")
+            return
+        elif len(args) == 2:
+            print("** attribute name missing **")
+            return
+        elif len(args) == 3:
+            print("** value missing **")
+            return
+        try:
+            eval(args[0])
+        except NameError:
+            print("** class doesn't exist **")
+            return
+        key = args[0] + "." + args[1]
+        obj_dict = storage.all()
+        try:
+            obj_value = obj_dict[key]
+        except KeyError:
+            print("** no instance found **")
+            return
+        try:
+            attr_type = type(getattr(obj_value, args[2]))
+            args[3] = attr_type(args[3])
+        except AttributeError:
+            pass
+        setattr(obj_value, args[2], args[3])
+        storage.save()
 
 if __name__ == "__main__":
     HBNDCommand().cmdloop()
