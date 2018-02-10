@@ -4,6 +4,7 @@
 '''
 import json
 
+
 class FileStorage:
     '''
         Serializes instances to JSON file and deserializes to JSON file
@@ -30,11 +31,12 @@ class FileStorage:
         '''
             serializes __objects attribute to JSON file.
         '''
+        objects_dict = {}
         for key, val in FileStorage.__objects.items():
-            FileStorage.__objects[key] = val.to_dict()
+            objects_dict[key] = val.to_dict()
 
         with open(FileStorage.__file_path, mode='w', encoding="UTF8") as fd:
-            json.dump(FileStorage.__objects, fd)
+            json.dump(objects_dict, fd)
 
     def reload(self):
         '''
