@@ -25,7 +25,6 @@ class HBNDCommand(cmd.Cmd):
         '''
             Exits after receiving the EOF signal.
         '''
-        self.emptyline()
         exit(0)
 
     def do_create(self, args):
@@ -51,10 +50,10 @@ class HBNDCommand(cmd.Cmd):
             the class name and id given as args.
         '''
         args = args.split(" ")
-        if len(args) == 0:
+        if len(args) == 1:
             print("** class name missing **")
             return
-        if len(args) == 1:
+        if len(args) == 2:
             print("** instance id missing **")
             return
         storage = FileStorage()
@@ -71,6 +70,49 @@ class HBNDCommand(cmd.Cmd):
             print(value)
         except KeyError:
             print("** no instance found **")
+
+    def do_destroy(self, args):
+        '''
+            Deletes an instance based on the class name and id.
+        '''
+        args = args.split(" ")
+        if len(args) == 1 and len(args[0]) == 0:
+            print("** class name missing **")
+            return
+        elif len(args) == 1:
+            print("** instance id missing **")
+            return
+        class_name = args[0]
+        class_id = args[1]
+        storage = FileStorage()
+        storage.reload()
+        obj_dict = storage.all()
+        st_obj_dict = str(obj_dict)
+        if class_name not in st_obj_dict:
+            print("** class doesn't exist **")
+            return
+
+        key = class_name + "." + class_id
+        try:
+            del obj_dict[key]
+        except KeyError:
+            print("** no instance found **")
+        storage.save()
+
+    def do_all(self, args):
+        '''
+            Prints all string representation of all instances
+            based or not on the class name.
+        '''
+        storage = FileStorage()
+        storage.reload()
+        objects = storage.all()
+        if args not in str(objects):
+            print("** class doesn't exist **")
+            return
+
+        for key, val in objects.items():
+            print(val)
 
 if __name__ == "__main__":
     HBNDCommand().cmdloop()
