@@ -46,14 +46,14 @@ class HBNDCommand(cmd.Cmd):
 
     def do_show(self, args):
         '''
-            Print the string representation of an instance baed on 
+            Print the string representation of an instance baed on
             the class name and id given as args.
         '''
         args = args.split(" ")
         storage = FileStorage()
         storage.reload()
         obj_dict = storage.all()
-        key = args[0] + "." + args[1]  
+        key = args[0] + "." + args[1]
         value = obj_dict[key]
         print(value)
 
