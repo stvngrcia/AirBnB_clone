@@ -76,7 +76,7 @@ class HBNDCommand(cmd.Cmd):
             Deletes an instance based on the class name and id.
         '''
         args = args.split(" ")
-        if len(args) == 1 and len(args[0]) == 0 :
+        if len(args) == 1 and len(args[0]) == 0:
             print("** class name missing **")
             return
         elif len(args) == 1:
@@ -99,6 +99,20 @@ class HBNDCommand(cmd.Cmd):
             print("** no instance found **")
         storage.save()
 
+    def do_all(self, args):
+        '''
+            Prints all string representation of all instances
+            based or not on the class name.
+        '''
+        storage = FileStorage()
+        storage.reload()
+        objects = storage.all()
+        if args not in str(objects):
+            print("** class doesn't exist **")
+            return
+
+        for key, val in objects.items():
+            print(val)
 
 if __name__ == "__main__":
     HBNDCommand().cmdloop()
