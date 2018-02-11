@@ -68,6 +68,7 @@ class TestBase(unittest.TestCase):
         '''
             Checks that the right message gets printed.
         '''
+        backup = sys.stdout
         inst_id = self.my_model.id
         capture_out = StringIO()
         sys.stdout = capture_out
@@ -77,6 +78,7 @@ class TestBase(unittest.TestCase):
         self.assertEqual(cap[0], "[BaseModel]")
 
         self.assertEqual(cap[1], "({})".format(inst_id))
+        sys.stdout = backup
 
     def test_to_dict_type(self):
         '''
