@@ -43,11 +43,13 @@ class FileStorage:
             deserializes the JSON file to __objects.
         '''
         from models.base_model import BaseModel
+        from models.user import User
 
         try:
             with open(FileStorage.__file_path, encoding="UTF8") as fd:
                 FileStorage.__objects = json.load(fd)
             for key, val in FileStorage.__objects.items():
-                FileStorage.__objects[key] = BaseModel(**val)
+                class_name = val["__class__"]
+                FileStorage.__objects[key] = eval(class_name)(**val)
         except FileNotFoundError:
             pass
