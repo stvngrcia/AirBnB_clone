@@ -111,6 +111,7 @@ class HBNDCommand(cmd.Cmd):
             Prints all string representation of all instances
             based or not on the class name.
         '''
+        obj_list = []
         storage = FileStorage()
         storage.reload()
         objects = storage.all()
@@ -121,7 +122,8 @@ class HBNDCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         for key, val in objects.items():
-            print(val)
+            obj_list.append(val)
+        print(obj_list)
 
     def do_update(self, args):
         '''
@@ -161,7 +163,7 @@ class HBNDCommand(cmd.Cmd):
         except AttributeError:
             pass
         setattr(obj_value, args[2], args[3])
-        storage.save()
+        obj_value.save()
 
     def emptyline(self):
         '''
