@@ -3,6 +3,7 @@
     Define class FileStorage
 '''
 import json
+import models
 
 
 class FileStorage:
@@ -42,19 +43,12 @@ class FileStorage:
         '''
             deserializes the JSON file to __objects.
         '''
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.place import Place
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.review import Review
-
         try:
             with open(FileStorage.__file_path, encoding="UTF8") as fd:
                 FileStorage.__objects = json.load(fd)
             for key, val in FileStorage.__objects.items():
                 class_name = val["__class__"]
-                FileStorage.__objects[key] = eval(class_name)(**val)
+                class_name = models.classes[class_name]
+                FileStorage.__objects[key] = class_name(**val)
         except FileNotFoundError:
             pass
