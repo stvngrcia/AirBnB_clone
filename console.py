@@ -200,13 +200,16 @@ class HBNBCommand(cmd.Cmd):
         print(len(obj_list))
 
     def default(self, args):
-        functions = {"all()": self.do_all, "update": self.do_update,
-                     "show": self.do_show, "count()": self.do_count,
+        functions = {"all": self.do_all, "update": self.do_update,
+                     "show": self.do_show, "count": self.do_count,
                      "destroy": self.do_destroy, "update": self.do_update}
-        args = args.split(".")
+        args = args.replace("(", ".").replace(")", ".").replace('"', "").replace(",",
+                            "").split(".")
+
         try:
+            cmd_arg = args[0] + " " + args[2]
             func = functions[args[1]]
-            func(args[0])
+            func(cmd_arg)
         except:
             print("*** Unknown syntax:", args[0])
 
