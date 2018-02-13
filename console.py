@@ -57,7 +57,7 @@ class HBNBCommand(cmd.Cmd):
             the class name and id given as args.
         '''
         args = shlex.split(args)
-        if len(args) == 1 and len(args[0]) == 0:
+        if len(args) == 0:
             print("** class name missing **")
             return
         if len(args) == 1:
@@ -84,7 +84,7 @@ class HBNBCommand(cmd.Cmd):
             Deletes an instance based on the class name and id.
         '''
         args = shlex.split(args)
-        if len(args) == 1 and len(args[0]) == 0:
+        if len(args) == 0:
             print("** class name missing **")
             return
         elif len(args) == 1:
@@ -139,7 +139,7 @@ class HBNBCommand(cmd.Cmd):
         storage = FileStorage()
         storage.reload()
         args = shlex.split(args)
-        if len(args) == 1 and len(args[0]) == 0:
+        if len(args) == 0:
             print("** class name missing **")
             return
         elif len(args) == 1:
