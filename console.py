@@ -4,6 +4,7 @@
 '''
 import cmd
 import json
+import shlex
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 from models.user import User
@@ -14,7 +15,7 @@ from models.amenity import Amenity
 from models.review import Review
 
 
-class HBNDCommand(cmd.Cmd):
+class HBNBCommand(cmd.Cmd):
     '''
         Contains the entry point of the command interpreter.
     '''
@@ -42,7 +43,7 @@ class HBNDCommand(cmd.Cmd):
             print("** class name missing **")
             return
         try:
-            args = args.split(" ")
+            args = shlex.split(args)
             new_instance = eval(args[0])()
             new_instance.save()
             print(new_instance.id)
@@ -55,7 +56,7 @@ class HBNDCommand(cmd.Cmd):
             Print the string representation of an instance baed on
             the class name and id given as args.
         '''
-        args = args.split(" ")
+        args = shlex.split(args)
         if len(args) == 1 and len(args[0]) == 0:
             print("** class name missing **")
             return
@@ -82,7 +83,7 @@ class HBNDCommand(cmd.Cmd):
         '''
             Deletes an instance based on the class name and id.
         '''
-        args = args.split(" ")
+        args = shlex.split(args)
         if len(args) == 1 and len(args[0]) == 0:
             print("** class name missing **")
             return
@@ -122,7 +123,12 @@ class HBNDCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         for key, val in objects.items():
-            obj_list.append(val)
+            if len(args) != 0:
+                if type(val) is eval(args):
+                    obj_list.append(val)
+            else:
+                obj_list.append(val)
+
         print(obj_list)
 
     def do_update(self, args):
@@ -132,7 +138,7 @@ class HBNDCommand(cmd.Cmd):
         '''
         storage = FileStorage()
         storage.reload()
-        args = args.split(" ")
+        args = shlex.split(args)
         if len(args) == 1 and len(args[0]) == 0:
             print("** class name missing **")
             return
@@ -171,5 +177,16 @@ class HBNDCommand(cmd.Cmd):
         '''
         pass
 
+    def default(self, args):
+        functions = {"all()": self.do_all, "update": self.do_update,
+                     "show": self.do_show,
+                     "destroy": self.do_destroy, "update": self.do_update}
+        args = args.split(".")
+        try:
+            func = functions[args[1]]
+            func(args[0])
+        except KeyError:
+            print("*** Unknown syntax:", args[0])
+
 if __name__ == "__main__":
-    HBNDCommand().cmdloop()
+    HBNBCommand().cmdloop()
