@@ -203,8 +203,8 @@ class HBNBCommand(cmd.Cmd):
         functions = {"all": self.do_all, "update": self.do_update,
                      "show": self.do_show, "count": self.do_count,
                      "destroy": self.do_destroy, "update": self.do_update}
-        args = args.replace("(", ".").replace(")", ".").replace('"', "").replace(",",
-                            "").split(".")
+        args = (args.replace("(", ".").replace(")", ".")
+                .replace('"', "").replace(",", "").split("."))
 
         try:
             cmd_arg = args[0] + " " + args[2]
