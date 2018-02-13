@@ -57,7 +57,7 @@ class HBNBCommand(cmd.Cmd):
             the class name and id given as args.
         '''
         args = shlex.split(args)
-        if len(args) == 1 and len(args[0]) == 0:
+        if len(args) == 0:
             print("** class name missing **")
             return
         if len(args) == 1:
@@ -84,7 +84,7 @@ class HBNBCommand(cmd.Cmd):
             Deletes an instance based on the class name and id.
         '''
         args = shlex.split(args)
-        if len(args) == 1 and len(args[0]) == 0:
+        if len(args) == 0:
             print("** class name missing **")
             return
         elif len(args) == 1:
@@ -139,7 +139,7 @@ class HBNBCommand(cmd.Cmd):
         storage = FileStorage()
         storage.reload()
         args = shlex.split(args)
-        if len(args) == 1 and len(args[0]) == 0:
+        if len(args) == 0:
             print("** class name missing **")
             return
         elif len(args) == 1:
@@ -177,15 +177,37 @@ class HBNBCommand(cmd.Cmd):
         '''
         pass
 
+    def do_count(self, args):
+        '''
+            Counts/retrieves the number of instances.
+        '''
+        obj_list = []
+        storage = FileStorage()
+        storage.reload()
+        objects = storage.all()
+        try:
+            if len(args) != 0:
+                eval(args)
+        except NameError:
+            print("** class doesn't exist **")
+            return
+        for key, val in objects.items():
+            if len(args) != 0:
+                if type(val) is eval(args):
+                    obj_list.append(val)
+            else:
+                obj_list.append(val)
+        print(len(obj_list))
+
     def default(self, args):
         functions = {"all()": self.do_all, "update": self.do_update,
-                     "show": self.do_show,
+                     "show": self.do_show, "count()": self.do_count,
                      "destroy": self.do_destroy, "update": self.do_update}
         args = args.split(".")
         try:
             func = functions[args[1]]
             func(args[0])
-        except KeyError:
+        except:
             print("*** Unknown syntax:", args[0])
 
 if __name__ == "__main__":
