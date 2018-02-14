@@ -106,11 +106,15 @@ class test_console(unittest.TestCase):
         sys.stdout = self.backup
         self.assertEqual("** no instance found **\n", x)
 
-    '''
-    def test_create(self):
-        console = self.create()
-        self.assertTrue(console.onecmd("create"))
 
+    def test_create(self):
+        '''
+            Test that create works
+        '''
+        console = self.create()
+        console.onecmd("create User")
+        self.assertTrue(str is type(self.capt_out.getvalue()))
+    '''
     def test_destroy(self):
         console = self.create()
         self.assertTrue(console.onecmd("destroy"))
