@@ -9,16 +9,11 @@ import models
 
 class BaseModel:
     '''
-        Base class for other classes to be used for the duration
-        of this project.
+        Base class for other classes to be used for the duration.
     '''
     def __init__(self, *args, **kwargs):
         '''
             Initialize public instance attributes.
-            Attributes:
-                id: id of an instance
-                created_at: Time of instance creation
-                updated_at: Time of instance update
         '''
         if (len(kwargs) == 0):
             self.id = str(uuid.uuid4())
@@ -50,8 +45,7 @@ class BaseModel:
 
     def save(self):
         '''
-            Update the updated_at attribute with new
-            current time.
+            Update the updated_at attribute with new.
         '''
         self.updated_at = datetime.now()
         models.storage.save()
@@ -59,8 +53,6 @@ class BaseModel:
     def to_dict(self):
         '''
             Return dictionary representation of BaseModel class.
-            convert created_at and updated_at atributes as
-            string object in ISO format.
         '''
         cp_dct = dict(self.__dict__)
         cp_dct['__class__'] = self.__class__.__name__
