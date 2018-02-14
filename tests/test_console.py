@@ -40,7 +40,7 @@ class test_console(unittest.TestCase):
         ''' Test all exists'''
         console = self.create()
         console.onecmd("all")
-        self.assertTrue(str is type(self.capt_out.getvalue()))
+        self.assertTrue(isinstance(self.capt_out.getvalue(), str))
 
     def test_show(self):
         '''
@@ -106,14 +106,13 @@ class test_console(unittest.TestCase):
         sys.stdout = self.backup
         self.assertEqual("** no instance found **\n", x)
 
-
     def test_create(self):
         '''
             Test that create works
         '''
         console = self.create()
         console.onecmd("create User")
-        self.assertTrue(str is type(self.capt_out.getvalue()))
+        self.assertTrue(isinstance(self.capt_out.getvalue(), str))
 
     def test_class_name(self):
         '''
@@ -123,7 +122,6 @@ class test_console(unittest.TestCase):
         console.onecmd("create")
         x = (self.capt_out.getvalue())
         self.assertEqual("** class name missing **\n", x)
-
 
     def test_class_name_doest_exist(self):
         '''
