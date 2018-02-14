@@ -17,7 +17,7 @@ class FileStorage:
         '''
             Return the dictionary
         '''
-        return FileStorage.__objects
+        return self.__objects
 
     def new(self, obj):
         '''
