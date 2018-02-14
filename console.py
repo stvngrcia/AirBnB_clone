@@ -200,6 +200,9 @@ class HBNBCommand(cmd.Cmd):
         print(len(obj_list))
 
     def default(self, args):
+        '''
+            Catches all the function names that are not expicitly defined.
+        '''
         functions = {"all": self.do_all, "update": self.do_update,
                      "show": self.do_show, "count": self.do_count,
                      "destroy": self.do_destroy, "update": self.do_update}
@@ -214,4 +217,7 @@ class HBNBCommand(cmd.Cmd):
             print("*** Unknown syntax:", args[0])
 
 if __name__ == "__main__":
+    '''
+        Entry point for the loop.
+    '''
     HBNBCommand().cmdloop()
