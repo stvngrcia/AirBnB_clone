@@ -216,6 +216,7 @@ class HBNBCommand(cmd.Cmd):
         except:
             print("*** Unknown syntax:", args[0])
 
+
 if __name__ == "__main__":
     '''
         Entry point for the loop.
