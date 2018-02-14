@@ -8,20 +8,20 @@ import models
 
 class FileStorage:
     '''
-        Serializes instances to JSON file and deserializes to JSON file.
+    Serializes instances to JSON file and deserializes to JSON file.
     '''
     __file_path = "file.json"
     __objects = {}
 
     def all(self):
         '''
-            return the dictionary
+        return the dictionary
         '''
         return FileStorage.__objects
 
     def new(self, obj):
         '''
-            set in __objects the obj with key <obj class name>.id
+        set in __objects the obj with key <obj class name>.id
         '''
         key = str(obj.__class__.__name__) + "." + str(obj.id)
         value_dict = obj
@@ -29,7 +29,7 @@ class FileStorage:
 
     def save(self):
         '''
-            serializes __objects attribute to JSON file.
+        serializes __objects attribute to JSON file.
         '''
         objects_dict = {}
         for key, val in FileStorage.__objects.items():
@@ -40,7 +40,7 @@ class FileStorage:
 
     def reload(self):
         '''
-            deserializes the JSON file to __objects.
+        deserializes the JSON file to __objects.
         '''
         try:
             with open(FileStorage.__file_path, encoding="UTF8") as fd:
