@@ -114,6 +114,15 @@ class test_console(unittest.TestCase):
         console = self.create()
         console.onecmd("create User")
         self.assertTrue(str is type(self.capt_out.getvalue()))
+
+    def test_class_name(self):
+        '''
+            Testing the error messages for class name missing.
+        '''
+        console = self.create()
+        console.onecmd("create")
+        x = (self.capt_out.getvalue())
+        self.assertEqual("** class name missing **\n", x)
     '''
     def test_destroy(self):
         console = self.create()
