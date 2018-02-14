@@ -24,7 +24,7 @@ class test_console(unittest.TestCase):
 
     def create(self):
         ''' create an instance of the HBNBCommand class'''
-        return HBNBCommand() 
+        return HBNBCommand()
 
     def test_quit(self):
         ''' Test quit exists'''
@@ -43,13 +43,68 @@ class test_console(unittest.TestCase):
         self.assertTrue(str is type(self.capt_out.getvalue()))
 
     def test_show(self):
+        '''
+            Testing that show exists
+        '''
         console = self.create()
         console.onecmd("create User")
         user_id = self.capt_out.getvalue()
+        sys.stdout = self.backup
+        self.capt_out.close()
+        self.capt_out = StringIO()
+        sys.stdout = self.capt_out
         console.onecmd("show User " + user_id)
         x = (self.capt_out.getvalue())
         sys.stdout = self.backup
-        print(x)
+        self.assertTrue(str is type(x))
+
+    def test_show_class_name(self):
+        '''
+            Testing the error messages for class name missing.
+        '''
+        console = self.create()
+        console.onecmd("create User")
+        user_id = self.capt_out.getvalue()
+        sys.stdout = self.backup
+        self.capt_out.close()
+        self.capt_out = StringIO()
+        sys.stdout = self.capt_out
+        console.onecmd("show")
+        x = (self.capt_out.getvalue())
+        sys.stdout = self.backup
+        self.assertEqual("** class name missing **\n", x)
+
+    def test_show_class_name(self):
+        '''
+            Test show message error for id missing
+        '''
+        console = self.create()
+        console.onecmd("create User")
+        user_id = self.capt_out.getvalue()
+        sys.stdout = self.backup
+        self.capt_out.close()
+        self.capt_out = StringIO()
+        sys.stdout = self.capt_out
+        console.onecmd("show User")
+        x = (self.capt_out.getvalue())
+        sys.stdout = self.backup
+        self.assertEqual("** instance id missing **\n", x)
+
+    def test_show_no_instance_found(self):
+        '''
+            Test show message error for id missing
+        '''
+        console = self.create()
+        console.onecmd("create User")
+        user_id = self.capt_out.getvalue()
+        sys.stdout = self.backup
+        self.capt_out.close()
+        self.capt_out = StringIO()
+        sys.stdout = self.capt_out
+        console.onecmd("show User " + "124356876")
+        x = (self.capt_out.getvalue())
+        sys.stdout = self.backup
+        self.assertEqual("** no instance found **\n", x)
 
     '''
     def test_create(self):
