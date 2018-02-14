@@ -24,7 +24,6 @@ class FileStorage:
             Set in __objects the obj with key <obj class name>.id
             Aguments:
                 obj : An instance object.
-
         '''
         key = str(obj.__class__.__name__) + "." + str(obj.id)
         value_dict = obj
