@@ -27,6 +27,7 @@ article{
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    padding-bottom: 30px;
 }
 article h2{
     font-size: 30px;
