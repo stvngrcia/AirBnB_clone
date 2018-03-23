@@ -114,6 +114,16 @@ class test_console(unittest.TestCase):
         console.onecmd("create User")
         self.assertTrue(isinstance(self.capt_out.getvalue(), str))
 
+    def test_create_adds_parameters_to_instances_attributes(self):
+        '''
+            Testing that do_create adds parameters to the instance's attrs
+        '''
+        console = self.create()
+        console.onecmd("create BaseModel name=\"Holly\"")
+        console.onecmd("all")
+        x = (self.capt_out.getvalue())
+        self.assertEqual('Holly' in x, True)
+
     def test_class_name(self):
         '''
             Testing the error messages for class name missing.
@@ -131,6 +141,8 @@ class test_console(unittest.TestCase):
         console.onecmd("create Binita")
         x = (self.capt_out.getvalue())
         self.assertEqual("** class doesn't exist **\n", x)
+
+
 
     '''
     def test_destroy(self):
