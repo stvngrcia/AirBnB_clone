@@ -46,12 +46,12 @@ class BaseModel:
         return ("[{}] ({}) {}".format(self.__class__.__name__,
                                       self.id, self.__dict__))
 
-    def __repr__(self):
+    #def __repr__(self):
         '''
             Return string representation of BaseModel class
         '''
-        return ("[{}] ({}) {}".format(self.__class__.__name__,
-                                      self.id, self.__dict__))
+    #    return ("[{}] ({}) {}".format(self.__class__.__name__,
+    #                                  self.id, self.__dict__))
 
     def save(self):
         '''
@@ -70,9 +70,10 @@ class BaseModel:
         cp_dct['updated_at'] = self.updated_at.strftime("%Y-%m-%dT%H:%M:%S.%f")
         cp_dct['created_at'] = self.created_at.strftime("%Y-%m-%dT%H:%M:%S.%f")
 
-        if '_sa_instance_state' in cp_dct:
+        # remove the key '_sa_instance_state' if it exists
+        if '_sa_instance_state' in cp_dct.keys():
             del cp_dct['_sa_instance_state']
-        return (cp_dct)
+        return cp_dct
 
     def delete(self):
         '''
