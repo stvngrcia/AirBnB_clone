@@ -53,3 +53,10 @@ from the root directory.
 ## Bugs
 
 + No known bugs at this time.
+
+## Authors
+
+Steven Garcia <steven.garcia@holbertonschool.com> <br>
+Binita Rai <binita.rai@holbertonschool.com> <br>
+Robert Malmstein <156@holbertonschool.com> <br>
+Raman Hundal <151@holbertonschool.com>
