@@ -53,3 +53,9 @@ from the root directory.
 ## Bugs
 
 + No known bugs at this time.
+
+## Authors
+* [Binita Rai](https://github.com/rayraib)
+* [Steven Garcia](https://github.com/stvngrcia)
+* [Sue Kalia](https://github.com/vkalia602)
+* [Yunju Chen](https://github.com/yunjuc)
