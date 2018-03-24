@@ -41,7 +41,8 @@ class HBNBCommand(cmd.Cmd):
         '''
 
         # values need to be of a certain data type
-        ints = {'number_rooms', 'number_bathrooms', 'max_guest', 'price_by_night'}
+        ints = {'number_rooms', 'number_bathrooms', 'max_guest',
+                'price_by_night'}
         floats = {'latitude', 'longitude'}
         lists = {'amenity_ids'}
 
