@@ -27,7 +27,7 @@ class DBStorage:
                                       pool_pre_ping=True)
         Base.metadata.create_all(self.__engine)
         if env == 'test':
-            DBStorage.__table__.drop(self.__engine)
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         '''Displays all objects of a class in the database'''
