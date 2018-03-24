@@ -41,30 +41,30 @@ class HBNBCommand(cmd.Cmd):
             Create a new instance of class BaseModel and saves it
             to the JSON file.
         '''
-
-        # values need to be of a certain data type
-        ints = {'number_rooms', 'number_bathrooms', 'max_guest',
-                'price_by_night'}
-        floats = {'latitude', 'longitude'}
-        lists = {'amenity_ids'}
-
         if len(args) == 0:
             print("** class name missing **")
             return
         try:
+
+            # values need to be of a certain data type for DBStorage
+            ints = {'number_rooms', 'number_bathrooms', 'max_guest',
+                    'price_by_night'}
+            floats = {'latitude', 'longitude'}
+            lists = {'amenity_ids'}
+
             args = shlex.split(args)
             new_instance = eval(args[0])()
             for arg in args[1:]:
                 key = arg.split('=')[0]
                 val = arg.split('=')[1]
 
-                # convert '_' to ' '
+                # convert '_' to ' ' for DBStorage
                 if '_' in val:
                     words = val.split('_')
                     words_with_spaces = ' '.join(words)
                     val = words_with_spaces
 
-                # change data type if needed
+                # change data type if needed for DBStorage
                 if key in ints:
                     val = int(val)
                 elif key in floats:
@@ -78,8 +78,12 @@ class HBNBCommand(cmd.Cmd):
             new_instance.save()
             print(new_instance.id)
 
-        except Exception as err:
-            print(err)
+        #For debugging:
+        #except Exception as err:
+        #    print('ERROR MESSAGE FROM DO_CREATE in console.py:')
+        #    print(err)
+        #    print()
+        except:
             print("** class doesn't exist **")
 
     def do_show(self, args):

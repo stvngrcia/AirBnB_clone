@@ -4,7 +4,7 @@
 '''
 import json
 import models
-
+import os
 
 class FileStorage:
     '''
@@ -15,9 +15,21 @@ class FileStorage:
 
     def all(self, cls=None):
         '''
-            Return the dictionary
+            Returns all objects. The format depends on the value of the
+            environment variable 'HBNB_TYPE_STORAGE'. If it is 'file', this
+            method will return a dictionary of objects that have been formatted
+            using the `new()` method. If it is 'db', a list of all objects in
+            the MySQL database will be returned.
         '''
-        return self.__objects
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+            pass
+            # do db
+        elif os.getenv('HBNB_TYPE_STORAGE') == 'file':
+            return self.__objects
+        else:
+            print('Invalid file storage type. Check the HBNB_TYPE_STORAGE' +
+                    'environment variable. It needs to be \'db\' or \'file\'')
+            return
 
     def new(self, obj):
         '''
@@ -26,8 +38,7 @@ class FileStorage:
                 obj : An instance object.
         '''
         key = str(obj.__class__.__name__) + "." + str(obj.id)
-        value_dict = obj
-        FileStorage.__objects[key] = value_dict
+        FileStorage.__objects[key] = obj
 
     def save(self):
         '''
@@ -56,12 +67,12 @@ class FileStorage:
 
     def delete(self, obj=None):
         '''
-           Deletes an object from __objects if it's inside.
+           Deletes an object from FileStorage__objects if it exists.
         '''
         if obj is None:
             return
-        new_dict = {}
-        for key, value in FileStorage.__objects.items():
-            if str(obj.__class__.__name__) + '.' + str(obj.id) != key:
-                new_dict[key] = value
-        FileStorage.__objects = new_dict
+        # Using dictionary comprehension to delete an item from
+        # FileStorage.__objects if the value is the object (`obj`) being passed
+        # to this method
+        FileStorage.__objects = {k: v for k, v in FileStorage.__objects.items()
+                                 if v.id != obj.id}
