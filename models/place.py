@@ -3,11 +3,15 @@
     Define the class Place.
 '''
 from models.base_model import BaseModel, Base
-from sqlalchemy import Integer, Float, String, Column, DateTime, ForeignKey
+from sqlalchemy import Integer, Float, String, Column, DateTime, ForeignKey, Table
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 
 
+place_amenity = Table('place_amenity', Base.metadata,
+                Column('place_id', String(60), ForeignKey('places.id'), nullable=False),
+                Column('amenity_id', String(60), ForeignKey('amenities.id'),
+                    nullable=False))
 class Place(BaseModel, Base):
     '''
         Define the class Place that inherits from BaseModel.
@@ -25,6 +29,7 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     amenity_ids = []
     reviews = relationship('Review', cascade='all, delete', backref='place')
+    amenities = relationship('Amenity', secondary='place_amenity', viewonly=False)
 
     @property
     def reviews(self):
@@ -35,3 +40,20 @@ class Place(BaseModel, Base):
             if self.id == review.place_id:
                 review_list.append(review)
         return review_list
+
+    @property
+    def amenities(self):
+        '''Getter method that returns the list of Amenities instances for
+        FileStorage engine.'''
+        return self.amenity_ids
+
+    @amenities.setter
+    def amenities(self, obj):
+        '''
+            Setter method that handles appending Amenity instances to a list. If
+            `val` is not an Amenity object, it won't be appended to the list.
+        '''
+        for amenities in self.amenities:
+            if self.id == amenities.place_id and \
+                    obj.__class__.__name__ == 'Amenity':
+                amenity_ids.append(obj)

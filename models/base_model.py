@@ -34,21 +34,29 @@ class BaseModel:
             Initialize public instance attributes `id`, `created_at` and
             `updated_at` (and others via kwargs)
         '''
-        if len(kwargs) == 0:
+        if 'id' not in kwargs:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
         else:
+            '''
+            if 'id' not in kwargs:
+                kwargs['id'] = str(uuid.uuid4())
+                kwargs['created_at'] = datetime.now()
+                kwargs['updated_at'] = datetime.now()
+                for key, val in kwargs.items():
+                    if "__class__" not in key:
+                        setattr(self, key, val)
+            '''
             kwargs["created_at"] = datetime.strptime(kwargs["created_at"],
                                                      "%Y-%m-%dT%H:%M:%S.%f")
             kwargs["updated_at"] = datetime.strptime(kwargs["updated_at"],
                                                      "%Y-%m-%dT%H:%M:%S.%f")
-
-            # What does this even do?
+        if kwargs:
             for key, val in kwargs.items():
-                # Why do we need this condition?
                 if "__class__" not in key:
                     setattr(self, key, val)
+
 
     def __str__(self):
         '''
