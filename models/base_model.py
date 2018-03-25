@@ -3,27 +3,35 @@
     This module defines the BaseModel class
 '''
 import uuid
+import os
 from datetime import datetime
 import models
 from sqlalchemy import Integer, String, Column, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 
-
+# SQLAlchemy's declarative system that lets us to map
+# classes and objects to tables in our database.
 Base = declarative_base()
 
 
 class BaseModel:
     '''
-        Base class for other classes to be used for the duration.
+        Base class for all models. Each model will be given `id`, `created_at`
+        and `updated_at` during initialization. Other instance attributes may
+        be added via kwargs.
     '''
+
+    # Class attributes for our database. These will represent Columns in the
+    # table designated for that specific model (ex: State => `states`)
     id = Column(String(60), nullable=False, primary_key=True)
     created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
 
     def __init__(self, *args, **kwargs):
         '''
-            Initialize public instance attributes.
+            Initialize public instance attributes `id`, `created_at` and
+            `updated_at` (and others via kwargs)
         '''
         if len(kwargs) == 0:
             self.id = str(uuid.uuid4())
@@ -34,27 +42,34 @@ class BaseModel:
                                                      "%Y-%m-%dT%H:%M:%S.%f")
             kwargs["updated_at"] = datetime.strptime(kwargs["updated_at"],
                                                      "%Y-%m-%dT%H:%M:%S.%f")
+
+            # Creates instance attributes from kwargs.
+            # For example, `kwargs={'name': "Cali"}` => self.name = "Cali"
             for key, val in kwargs.items():
+                # Why do we need this condition?
                 if "__class__" not in key:
                     setattr(self, key, val)
 
     def __str__(self):
         '''
-            Return string representation of BaseModel class
+            Return string representation of a model.
         '''
         return ("[{}] ({}) {}".format(self.__class__.__name__,
                                       self.id, self.__dict__))
 
-    #def __repr__(self):
-    #    '''
-    #        Return string representation of BaseModel class
-    #    '''
-    #    return ("[{}] ({}) {}".format(self.__class__.__name__,
-    #                                  self.id, self.__dict__))
+    def __repr__(self):
+        '''
+            Return string representation of a model.
+        '''
+        return ("[{}] ({}) {}".format(self.__class__.__name__,
+                                      self.id, self.__dict__))
 
     def save(self):
         '''
-            Updates the updated_at attribute, calls storage.new
+            Updates the updated_at attribute, then, depending on the
+            HBNB_STORAGE_TYPE environment variable, it will either add the
+            object to FileStorage.__objects and save to JSON, or create an
+            entry in the database.
         '''
         self.updated_at = datetime.utcnow()
         models.storage.new(self)
@@ -62,7 +77,9 @@ class BaseModel:
 
     def to_dict(self):
         '''
-            Return dictionary representation of BaseModel class.
+            Return a dictionary representation of a model. If the key
+            `_sa_instance_state` exists in the model's __dict__, it will be
+            removed.
         '''
         cp_dct = dict(self.__dict__)
         cp_dct['__class__'] = self.__class__.__name__
@@ -70,12 +87,14 @@ class BaseModel:
         cp_dct['created_at'] = self.created_at.strftime("%Y-%m-%dT%H:%M:%S.%f")
 
         # remove the key '_sa_instance_state' if it exists
-        if '_sa_instance_state' in cp_dct.keys():
-            del cp_dct['_sa_instance_state']
+        cp_dct = {k: v for k, v in cp_dct.items() if k != '_sa_instance_state'}
+
+        # if '_sa_instance_state' in cp_dct.keys():
+        #    del cp_dct['_sa_instance_state']
         return cp_dct
 
     def delete(self):
         '''
-           Deletes the current instance from models.storage.
+           Deletes the object by calling the object's storage.delete() method.
         '''
         models.storage.delete(self)

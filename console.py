@@ -78,8 +78,8 @@ class HBNBCommand(cmd.Cmd):
             new_instance.save()
             print(new_instance.id)
 
-        #For debugging:
-        #except Exception as err:
+        # For debugging:
+        # except Exception as err:
         #    print('ERROR MESSAGE FROM DO_CREATE in console.py:')
         #    print(err)
         #    print()
@@ -150,23 +150,25 @@ class HBNBCommand(cmd.Cmd):
         obj_list = []
         if os.environ['HBNB_TYPE_STORAGE'] == 'db':
             storage = DBStorage()
-            storage.reload()
         else:
             storage = FileStorage()
-            storage.reload()
-        objects = storage.all()
+        if args:
+            objects = storage.all(eval(args)().__class__)
+        if not args:
+            objects = storage.all()
         try:
             if len(args) != 0:
                 eval(args)
         except NameError:
             print("** class doesn't exist **")
             return
-        for key, val in objects.items():
-            if len(args) != 0:
-                if type(val) is eval(args):
+        if args:
+            for key, val in objects.items():
+                if len(args) != 0:
+                    if type(val) is eval(args):
+                        obj_list.append(val)
+                else:
                     obj_list.append(val)
-            else:
-                obj_list.append(val)
 
         print(obj_list)
 

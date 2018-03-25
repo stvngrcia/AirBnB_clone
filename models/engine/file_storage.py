@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 '''
-    Define class FileStorage
+    FileStorage Engine
 '''
 import json
 import models
 import os
+
 
 class FileStorage:
     '''
@@ -28,7 +29,7 @@ class FileStorage:
             return self.__objects
         else:
             print('Invalid file storage type. Check the HBNB_TYPE_STORAGE' +
-                    'environment variable. It needs to be \'db\' or \'file\'')
+                  'environment variable. It needs to be \'db\' or \'file\'')
             return
 
     def new(self, obj):
