@@ -3,11 +3,12 @@
     Implementation of the State class
 '''
 
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
+from sqlalchemy import Column, Integer, String, ForeignKey
 
-
-class State(BaseModel):
+class State(BaseModel, Base):
     '''
         Implementation for the State.
     '''
-    name = ""
+    __tablename__ = 'states'
+    name = Column(String(128), nullable=False)

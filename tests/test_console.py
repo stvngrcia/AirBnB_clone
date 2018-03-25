@@ -142,3 +142,7 @@ class test_console(unittest.TestCase):
         self.assertTrue(console.onecmd("update"))
 
     '''
+    '''
+    New Tests for project 0x02. AirBnB clone - MySQL
+
+    '''
