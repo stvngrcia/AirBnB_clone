@@ -10,11 +10,6 @@ import os
 import models
 from models.city import City
 from models.state import State
-user = os.environ['HBNB_MYSQL_USER']
-password = os.environ['HBNB_MYSQL_PWD']
-host = os.environ['HBNB_MYSQL_HOST']
-database = os.environ['HBNB_MYSQL_DB']
-env = os.environ['HBNB_ENV']
 
 
 class DBStorage:
@@ -29,6 +24,12 @@ class DBStorage:
             DBStorage constructor
         '''
 
+        print('IN DBSTORAGE.__INIT__')
+
+        user = os.getenv['HBNB_MYSQL_USER']
+        password = os.getenv['HBNB_MYSQL_PWD']
+        host = os.getenv['HBNB_MYSQL_HOST']
+        database = os.getenv['HBNB_MYSQL_DB']
         # Request a connection with the database once required
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
                                       format(user, password, host, database),
@@ -39,7 +40,7 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
 
         # If we are testing, we will drop all the tables. Why ??
-        if env == 'test':
+        if os.getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
 
         # Start talking to the db

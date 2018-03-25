@@ -12,6 +12,7 @@ from sqlalchemy.orm import relationship, backref
 
 # SQLAlchemy's declarative system that lets us to map
 # classes and objects to tables in our database.
+#if os.getenv('HBNB_STORAGE_TYPE') == 'db':
 Base = declarative_base()
 
 
@@ -43,8 +44,7 @@ class BaseModel:
             kwargs["updated_at"] = datetime.strptime(kwargs["updated_at"],
                                                      "%Y-%m-%dT%H:%M:%S.%f")
 
-            # Creates instance attributes from kwargs.
-            # For example, `kwargs={'name': "Cali"}` => self.name = "Cali"
+            # What does this even do?
             for key, val in kwargs.items():
                 # Why do we need this condition?
                 if "__class__" not in key:
