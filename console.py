@@ -47,14 +47,15 @@ class HBNBCommand(cmd.Cmd):
             args = shlex.split(args)
             new_instance = eval(args[0])()
             for strings in range(1, len(args)):
-                    key, value = args[strings].split('=')
-                    value = value.replace('_', ' ')
-                    if re.search('[a-zA-Z]', value) == None:
-                        if "." in value:
-                            value = float(value)
-                        else:
-                            value = int(value)
-                    setattr(new_instance, key, value)
+                    if "=" in args[strings]:
+                        key, value = args[strings].split('=')
+                        value = value.replace('_', ' ')
+                        if re.search('[a-zA-Z]', value) == None:
+                            if "." in value:
+                                value = float(value)
+                            else:
+                                value = int(value)
+                        setattr(new_instance, key, value)
             new_instance.save()
             print(new_instance.id)
 
