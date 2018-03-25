@@ -24,12 +24,10 @@ class DBStorage:
             DBStorage constructor
         '''
 
-        print('IN DBSTORAGE.__INIT__')
-
-        user = os.getenv['HBNB_MYSQL_USER']
-        password = os.getenv['HBNB_MYSQL_PWD']
-        host = os.getenv['HBNB_MYSQL_HOST']
-        database = os.getenv['HBNB_MYSQL_DB']
+        user = os.getenv('HBNB_MYSQL_USER')
+        password = os.getenv('HBNB_MYSQL_PWD')
+        host = os.getenv('HBNB_MYSQL_HOST')
+        database = os.getenv('HBNB_MYSQL_DB')
         # Request a connection with the database once required
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
                                       format(user, password, host, database),
@@ -92,6 +90,10 @@ class DBStorage:
             Reloads all tables in the database
         '''
         # Request a connection with the database once required
+        user = os.getenv('HBNB_MYSQL_USER')
+        password = os.getenv('HBNB_MYSQL_PWD')
+        host = os.getenv('HBNB_MYSQL_HOST')
+        database = os.getenv('HBNB_MYSQL_DB')
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
                                       format(user, password, host, database),
                                       pool_pre_ping=True)
