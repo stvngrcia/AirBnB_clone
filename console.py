@@ -162,13 +162,12 @@ class HBNBCommand(cmd.Cmd):
         except NameError:
             print("** class doesn't exist **")
             return
-        if args:
-            for key, val in objects.items():
-                if len(args) != 0:
-                    if type(val) is eval(args):
-                        obj_list.append(val)
-                else:
+        for key, val in objects.items():
+            if len(args) != 0:
+                if type(val) is eval(args):
                     obj_list.append(val)
+            else:
+                obj_list.append(val)
 
         print(obj_list)
 
