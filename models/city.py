@@ -5,9 +5,10 @@
 from models.base_model import BaseModel
 
 
-class City(BaseModel):
+class City(BaseModel, Base):
     '''
         Define the class City that inherits from BaseModel.
     '''
-    state_id = ""
-    name = ""
+    __tablename__ = 'cities'
+    state_id = Column(String(60), nullable=False, ForeignKey('states.id'))
+    name = Column(String(128), nullable=False)
