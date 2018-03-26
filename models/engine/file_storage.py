@@ -58,6 +58,7 @@ class FileStorage:
         '''
             Delete an object from __objects.
         '''
-        key = str(obj.__class__.__name__) + "." + str(obj.id)
         if obj is not None:
-            del FileStorage.__objects[key]
+            key = str(obj.__class__.__name__) + "." + str(obj.id)
+            if key in FileStorage.__objects:
+                del FileStorage.__objects[key]
