@@ -45,10 +45,15 @@ class HBNBCommand(cmd.Cmd):
         try:
             args = shlex.split(args)
             new_instance = eval(args[0])()
+            for arg in args[1:]:
+                key = arg.split('=')[0]
+                val = arg.split('=')[1]
+                new_instance.__dict__[key] = val
             new_instance.save()
             print(new_instance.id)
 
-        except:
+        except Exception as err:
+            print(err)
             print("** class doesn't exist **")
 
     def do_show(self, args):
