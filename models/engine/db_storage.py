@@ -11,7 +11,6 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
-from os import os
 
 
 class DBStorage:
@@ -42,6 +41,7 @@ class DBStorage:
         if cls is not None:
             for obj in session.query(cls):
                 print(obj)
+#                print("[{}] ({}) {}".format(cls, obj.id, )
 
     def new(self, obj):
         '''
@@ -57,9 +57,10 @@ class DBStorage:
 
     def delete(self, obj=None):
         '''
-        Delete an object from database
+        Delete an object from database if not none
         '''
-        self.__session.delete(self)
+        if obj is not None:
+            self.__session.delete(self)
 
     def reload(self):
         '''
@@ -68,5 +69,4 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
-        Session = scoped_session(session_factory)
-        self.__session = Session()
+        self.__sessioin = scoped_session(session_factory)
