@@ -5,6 +5,7 @@
 import cmd
 import json
 import shlex
+import os
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 from models.user import User
@@ -13,6 +14,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from models.engine.db_storage import DBStorage
 
 
 class HBNBCommand(cmd.Cmd):
@@ -142,8 +144,12 @@ class HBNBCommand(cmd.Cmd):
             based or not on the class name.
         '''
         obj_list = []
-        storage = FileStorage()
-        storage.reload()
+        if os.environ['HBNB_TYPE_STORAGE'] == 'db':
+            storage = DBStorage()
+            storage.reload()
+        else:
+            storage = FileStorage()
+            storage.reload()
         objects = storage.all()
         try:
             if len(args) != 0:
