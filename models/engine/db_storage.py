@@ -8,6 +8,8 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
 import os
 import models
+from models.city import City
+from models.state import State
 user = os.environ['HBNB_MYSQL_USER']
 password = os.environ['HBNB_MYSQL_PWD']
 host = os.environ['HBNB_MYSQL_HOST']
@@ -34,9 +36,10 @@ class DBStorage:
         Session = sessionmaker(bind=self.__engine)
         self.__session = Session()
         all_objects = {}
+        db_list = [City, State]
         if cls is None:
-            for cls in models.classes.keys():
-                for instance in self.__session.query(cls).all():
+            for item in db_list:
+                for instance in self.__session.query(item).all():
                     key = '{}.{}'.format(instance.name, instance.id)
                     all_objects[key] = instance
         else:
