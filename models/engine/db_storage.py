@@ -5,6 +5,7 @@
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
+from models.base_model import Base
 import os
 import models
 user = os.environ['HBNB_MYSQL_USER']
@@ -12,7 +13,6 @@ password = os.environ['HBNB_MYSQL_PWD']
 host = os.environ['HBNB_MYSQL_HOST']
 database = os.environ['HBNB_MYSQL_DB']
 env = os.environ['HBNB_ENV']
-from models.base_model import Base
 
 
 class DBStorage:
@@ -27,7 +27,7 @@ class DBStorage:
                                       pool_pre_ping=True)
         Base.metadata.create_all(self.__engine)
         if env == 'test':
-            DBStorage.__table__.drop(self.__engine)
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         '''Displays all objects of a class in the database'''
