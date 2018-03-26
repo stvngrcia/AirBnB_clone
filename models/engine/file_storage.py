@@ -58,6 +58,8 @@ class FileStorage:
         '''
            Deletes an object from __objects if it's inside.
         '''
+        if obj is None:
+            return
         new_dict = {}
         for key, value in FileStorage.__objects.items():
             if str(obj.__class__.__name__) + '.' + str(obj.id) != key:
