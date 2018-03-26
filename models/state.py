@@ -20,20 +20,20 @@ class State(BaseModel, Base):
                               cascade='all, delete, delete-orphan')
     else:
         name = ""
+        @property
+        def cities (self):
+        '''
+        Getter for citites
+        '''
+        all_cities = models.storage.all(City)
+        cities = {}
+        for key, obj in city_list:
+            if key == state_id:
+                cities[key] = obj
+        return cities
 
     def __init__(self):
         '''
         Instantiate State
         '''
         super().__init__()
-
-"""
-    if getenv('HBNB_TYPE_STORAGE') is not 'db':
-        @property
-        def cities(self):
-            '''
-            Set getter for cities
-            '''
-            all_cities = models.storage.all(city)
-            for 
-"""
