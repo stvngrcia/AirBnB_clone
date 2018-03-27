@@ -39,15 +39,40 @@ class HBNBCommand(cmd.Cmd):
             Create a new instance of class BaseModel and saves it
             to the JSON file.
         '''
+        new_dict = {}
+        args_list = []
+
         if len(args) == 0:
             print("** class name missing **")
             return
+        args = shlex.split(args, posix=False)
+        class_name = args[0]
+
+        for i in range(1, len(args)):
+            args_list.append(args[i].split("="))
+
+        for i in range(len(args_list)):
+            value = args_list[i][1]
+            value = value.replace("_", " ")
+            value = value.replace('"', '\"')
+            if value.isdigit():
+                if value.find('.'):
+                    value = float(value)
+                else:
+                    value = int(value)
+                new_dict[args_list[i][0]] = value
+            elif value.startswith('"') and value.endswith('"'):
+                new_dict[args_list[i][0]] = value
+            else:
+                pass
+
         try:
-            args = shlex.split(args)
-            new_instance = eval(args[0])()
+            new_instance = eval(class_name)()
+            for key, val in new_dict.items():
+                setattr(new_instance, key, val)
+
             new_instance.save()
             print(new_instance.id)
-
         except:
             print("** class doesn't exist **")
 

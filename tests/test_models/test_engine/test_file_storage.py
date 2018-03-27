@@ -101,3 +101,14 @@ class testFileStorage(unittest.TestCase):
             self.assertTrue(True)
         except:
             self.assertTrue(False)
+
+    def test_delete_method(self):
+        '''
+            Tests that the delete method removes an object from the
+            FileStorage.__object
+        '''
+        self.storage.new(self.my_model)
+        key = str(self.my_model.__class__.__name__ + "." + self.my_model.id)
+        self.assertTrue(key in self.storage._FileStorage__objects)
+        self.storage.delete(self.my_model)
+        self.assertFalse(key in self.storage._FileStorage__objects)
