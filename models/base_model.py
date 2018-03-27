@@ -89,8 +89,6 @@ class BaseModel:
         # remove the key '_sa_instance_state' if it exists
         cp_dct = {k: v for k, v in cp_dct.items() if k != '_sa_instance_state'}
 
-        # if '_sa_instance_state' in cp_dct.keys():
-        #    del cp_dct['_sa_instance_state']
         return cp_dct
 
     def delete(self):

@@ -22,15 +22,7 @@ class FileStorage:
             using the `new()` method. If it is 'db', a list of all objects in
             the MySQL database will be returned.
         '''
-        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-            pass
-            # do db
-        elif os.getenv('HBNB_TYPE_STORAGE') == 'file':
-            return self.__objects
-        else:
-            print('Invalid file storage type. Check the HBNB_TYPE_STORAGE' +
-                  'environment variable. It needs to be \'db\' or \'file\'')
-            return
+        return self.__objects
 
     def new(self, obj):
         '''
