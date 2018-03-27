@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 '''
-    Define class DBStorage
+    DBStorage Engine
 '''
 
 from sqlalchemy import create_engine
@@ -18,54 +18,84 @@ env = os.environ['HBNB_ENV']
 
 
 class DBStorage:
-    '''DBStorage Class'''
+    '''
+        DBStorage Class
+    '''
     __engine = None
     __session = None
 
     def __init__(self):
-        '''DBStorage constructor'''
+        '''
+            DBStorage constructor
+        '''
+
+        # Request a connection with the database once required
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
                                       format(user, password, host, database),
                                       pool_pre_ping=True)
+
+        # Base gets some metadata when it is created (in models/base_model).
+        # The metadata contains all the info we need to create the tables.
         Base.metadata.create_all(self.__engine)
+
+        # If we are testing, we will drop all the tables. Why ??
         if env == 'test':
             Base.metadata.drop_all(self.__engine)
 
-    def all(self, cls=None):
-        '''Displays all objects of a class in the database'''
+        # Start talking to the db
         Session = sessionmaker(bind=self.__engine)
+
+        # Session is a SQLAlchemy class. self.__session is an instance.
         self.__session = Session()
+
+    def all(self, cls=None):
+        '''
+            Queries all objects of a class in the database. If cls is None it
+            will display all objects in the database
+        '''
         all_objects = {}
-        db_list = [City, State]
-        if cls is None:
-            for item in db_list:
-                for instance in self.__session.query(item).all():
-                    key = '{}.{}'.format(instance.name, instance.id)
-                    all_objects[key] = instance
+        if cls:
+            query = self.__session.query(cls).all()
+            for obj in query:
+                key = '{}.{}'.format(obj.name, obj.id)
+                all_objects[key] = obj
         else:
-            for instance in self.__session.query(cls).all():
-                key = '{}.{}'.format(instance.name, instance.id)
-                all_objects[key] = instance
+            db_list = [City, State]
+            for cls in db_list:
+                for obj in self.__session.query(cls).all():
+                    key = '{}.{}'.format(obj.name, obj.id)
+                    all_objects[key] = obj
         return all_objects
 
     def new(self, obj):
-        '''Adds an object to the current database session'''
+        '''
+            Adds an object to the current database session.
+        '''
         self.__session.add(obj)
 
     def save(self):
-        '''Commits an object to the current database session'''
+        '''
+            Commits an object to the current database session.
+        '''
         self.__session.commit()
 
     def delete(self, obj=None):
-        '''Deletes an object fromn the current database session'''
+        '''
+            Deletes an object fromn the current database session
+        '''
         if obj:
             self.__session.delete(obj)
 
     def reload(self):
-        '''Reloads all tables in the database'''
+        '''
+            Reloads all tables in the database
+        '''
+        # Request a connection with the database once required
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
+                                      format(user, password, host, database),
+                                      pool_pre_ping=True)
+        from models.base_model import Base
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine,
-                                       expire_on_commit=False)
-        Session = scoped_session(session_factory)
-        Session.configure(bind=self.__engine)
+        Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Session = scoped_session(Session)
         self.__session = Session()
