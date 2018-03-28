@@ -10,6 +10,10 @@ import os
 import models
 from models.city import City
 from models.state import State
+user = os.getenv('HBNB_MYSQL_USER')
+password = os.getenv('HBNB_MYSQL_PWD')
+host = os.getenv('HBNB_MYSQL_HOST')
+database = os.getenv('HBNB_MYSQL_DB')
 
 
 class DBStorage:
@@ -26,10 +30,6 @@ class DBStorage:
 
         print('IN DBSTORAGE.__INIT__')
 
-        user = os.getenv['HBNB_MYSQL_USER']
-        password = os.getenv['HBNB_MYSQL_PWD']
-        host = os.getenv['HBNB_MYSQL_HOST']
-        database = os.getenv['HBNB_MYSQL_DB']
         # Request a connection with the database once required
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
                                       format(user, password, host, database),
