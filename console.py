@@ -5,6 +5,7 @@
 import cmd
 import json
 import shlex
+import os
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 from models.user import User
@@ -13,6 +14,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from models.engine.db_storage import DBStorage
 
 
 class HBNBCommand(cmd.Cmd):
@@ -43,11 +45,44 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         try:
+
+            # values need to be of a certain data type for DBStorage
+            ints = {'number_rooms', 'number_bathrooms', 'max_guest',
+                    'price_by_night'}
+            floats = {'latitude', 'longitude'}
+            lists = {'amenity_ids'}
+
             args = shlex.split(args)
             new_instance = eval(args[0])()
+            for arg in args[1:]:
+                key = arg.split('=')[0]
+                val = arg.split('=')[1]
+
+                # convert '_' to ' ' for DBStorage
+                if '_' in val:
+                    words = val.split('_')
+                    words_with_spaces = ' '.join(words)
+                    val = words_with_spaces
+
+                # change data type if needed for DBStorage
+                if key in ints:
+                    val = int(val)
+                elif key in floats:
+                    val = float(val)
+                elif key in lists:
+                    val = list(val)
+
+                # set the attributes
+                new_instance.__dict__[key] = val
+
             new_instance.save()
             print(new_instance.id)
 
+        # For debugging:
+        # except Exception as err:
+        #    print('ERROR MESSAGE FROM DO_CREATE in console.py:')
+        #    print(err)
+        #    print()
         except:
             print("** class doesn't exist **")
 
@@ -113,9 +148,14 @@ class HBNBCommand(cmd.Cmd):
             based or not on the class name.
         '''
         obj_list = []
-        storage = FileStorage()
-        storage.reload()
-        objects = storage.all()
+        if os.environ['HBNB_TYPE_STORAGE'] == 'db':
+            storage = DBStorage()
+        else:
+            storage = FileStorage()
+        if args:
+            objects = storage.all(eval(args)().__class__)
+        if not args:
+            objects = storage.all()
         try:
             if len(args) != 0:
                 eval(args)
@@ -213,7 +253,7 @@ class HBNBCommand(cmd.Cmd):
             cmd_arg = args[0] + " " + args[2]
             func = functions[args[1]]
             func(cmd_arg)
-        except:
+        except Exception:
             print("*** Unknown syntax:", args[0])
 
 

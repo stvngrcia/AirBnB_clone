@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 '''
-    Define class FileStorage
+    FileStorage Engine
 '''
 import json
 import models
+import os
 
 
 class FileStorage:
@@ -13,9 +14,13 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
-    def all(self):
+    def all(self, cls=None):
         '''
-            Return the dictionary
+            Returns all objects. The format depends on the value of the
+            environment variable 'HBNB_TYPE_STORAGE'. If it is 'file', this
+            method will return a dictionary of objects that have been formatted
+            using the `new()` method. If it is 'db', a list of all objects in
+            the MySQL database will be returned.
         '''
         return self.__objects
 
@@ -26,8 +31,7 @@ class FileStorage:
                 obj : An instance object.
         '''
         key = str(obj.__class__.__name__) + "." + str(obj.id)
-        value_dict = obj
-        FileStorage.__objects[key] = value_dict
+        FileStorage.__objects[key] = obj
 
     def save(self):
         '''
@@ -53,3 +57,15 @@ class FileStorage:
                 FileStorage.__objects[key] = class_name(**val)
         except FileNotFoundError:
             pass
+
+    def delete(self, obj=None):
+        '''
+           Deletes an object from FileStorage__objects if it exists.
+        '''
+        if obj is None:
+            return
+        # Using dictionary comprehension to delete an item from
+        # FileStorage.__objects if the value is the object (`obj`) being passed
+        # to this method
+        FileStorage.__objects = {k: v for k, v in FileStorage.__objects.items()
+                                 if v.id != obj.id}
