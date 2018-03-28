@@ -79,12 +79,12 @@ class HBNBCommand(cmd.Cmd):
             print(new_instance.id)
 
         # For debugging:
-        # except Exception as err:
-        #    print('ERROR MESSAGE FROM DO_CREATE in console.py:')
-        #    print(err)
-        #    print()
-        except:
-            print("** class doesn't exist **")
+        except Exception as err:
+            print('ERROR MESSAGE FROM DO_CREATE in console.py:')
+            print(err)
+            print()
+        #except:
+        #    print("** class doesn't exist **")
 
     def do_show(self, args):
         '''
