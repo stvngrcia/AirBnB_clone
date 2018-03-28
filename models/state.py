@@ -23,19 +23,16 @@ class State(BaseModel, Base):
             `BaseModel.updated_at`
     '''
 
-    if os.getenv('HBNB_STORAGE_TYPE') == 'file':
+    @property
+    def cities(self):
+        '''Getter method that returns the list of City instances for
+        FileStorage engine.'''
+        city_list = []
+        for city in self.cities:
+            if self.id == city.state_id:
+                city_list.append(city)
+        return city_list
 
-        @property
-        def cities(self):
-            '''Getter method that returns the list of City instances for
-            FileStorage engine.'''
-            city_list = []
-            for city in self.cities:
-                if self.id == city.state_id:
-                    city_list.append(city)
-            return city_list
-
-    else:
-        __tablename__ = 'states'
-        name = Column(String(128), nullable=False)
-        cities = relationship('City', cascade='all, delete', backref='state')
+    __tablename__ = 'states'
+    name = Column(String(128), nullable=False)
+    cities = relationship('City', cascade='all, delete', backref='state')
