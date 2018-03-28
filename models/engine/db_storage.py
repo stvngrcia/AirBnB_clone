@@ -23,7 +23,6 @@ class DBStorage:
         '''
             DBStorage constructor
         '''
-
         user = os.getenv('HBNB_MYSQL_USER')
         password = os.getenv('HBNB_MYSQL_PWD')
         host = os.getenv('HBNB_MYSQL_HOST')
