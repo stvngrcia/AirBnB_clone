@@ -23,18 +23,11 @@ class DBStorage:
         '''
             DBStorage constructor
         '''
-<<<<<<< HEAD
-=======
-
->>>>>>> 413ca6275a0b43ce8a975273a4e28faf502e0b3e
         user = os.getenv('HBNB_MYSQL_USER')
         password = os.getenv('HBNB_MYSQL_PWD')
         host = os.getenv('HBNB_MYSQL_HOST')
         database = os.getenv('HBNB_MYSQL_DB')
-<<<<<<< HEAD
-=======
 
->>>>>>> 413ca6275a0b43ce8a975273a4e28faf502e0b3e
         # Request a connection with the database once required
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
                                       format(user, password, host, database),
