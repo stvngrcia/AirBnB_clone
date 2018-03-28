@@ -24,3 +24,14 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     amenity_ids = []
+    reviews = relationship('Review', cascade='all, delete', backref='place')
+
+    @property
+    def reviews(self):
+        '''Getter method that returns the list of Review instances for
+        FileStorage engine.'''
+        review_list = []
+        for review in self.reviews:
+            if self.id == review.place_id:
+                review_list.append(review)
+        return review_list
