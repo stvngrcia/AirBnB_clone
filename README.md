@@ -53,3 +53,24 @@ from the root directory.
 ## Bugs
 
 + No known bugs at this time.
+
+## Authors
+* [**Amy Galles**](https://github.com/AmyLGalles)
+* [**Lisa Olson**](https://github.com/lisaolson)
+
+-----
+
+Legal
+=====
+
+Use and transfer of Holberton BnB may be subject to certain restrictions
+by the United States and other governments.
+
+It's your responsibility to ensure that you use and/or transfer does not
+violate applicable laws.
+
+For more information, please see http://www.bis.doc.gov
+
+Licensing
+=========
+Holberton BnB is licensed under the MIT License.
