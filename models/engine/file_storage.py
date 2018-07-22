@@ -59,4 +59,4 @@ class FileStorage:
             Deletes an object from database
         '''
         '''FileStorage - type'''
-        FileStorage.__objects.pop((type(obj).__name__ + "." +  obj.id), None)
+        FileStorage.__objects.pop((type(obj).__name__ + "." + obj.id), None)
