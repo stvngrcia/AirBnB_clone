@@ -14,6 +14,8 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
+           "Place": Place, "Review": Review, "State": State, "User": User}
 
 class HBNBCommand(cmd.Cmd):
     '''
@@ -39,17 +41,29 @@ class HBNBCommand(cmd.Cmd):
             Create a new instance of class BaseModel and saves it
             to the JSON file.
         '''
+
         if len(args) == 0:
             print("** class name missing **")
             return
-        try:
-            args = shlex.split(args)
-            new_instance = eval(args[0])()
+        args = shlex.split(args)
+        if args[0] in classes:
+            new_instance = classes[args[0]]()
+            for arg in args[1:]:
+                key = args[1].split("=")[0]
+                val = args[1].split("=")[1].replace('_', ' ')
+                try:
+                    int(val)
+                except:
+                    try:
+                        float(val)
+                    except:
+                        continue
+                setattr(new_instance, key, val)
             new_instance.save()
             print(new_instance.id)
-
-        except:
+        else:
             print("** class doesn't exist **")
+
 
     def do_show(self, args):
         '''
