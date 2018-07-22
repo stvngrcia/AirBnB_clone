@@ -42,14 +42,32 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 0:
             print("** class name missing **")
             return
+
         try:
             args = shlex.split(args)
-            new_instance = eval(args[0])()
+            item_class = args[0]
+            attributes = args[1:]
+            new_instance = eval(item_class)()
             new_instance.save()
+
+            for items in attributes:
+                items.replace(" ", "_")
+                pair = items.split('=')
+                try:
+                    pair[1] = int(pair[1])
+                except ValueError:
+                    try:
+                        pair[1] = float(pair[1])
+                    except ValueError:
+                        pass
+
+                setattr(new_instance, pair[0], pair[1])
+                new_instance.save()
+
             print(new_instance.id)
 
         except:
-            print("** class doesn't exist **")
+            print("**class doesn't exist**")
 
     def do_show(self, args):
         '''
