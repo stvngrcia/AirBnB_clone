@@ -60,13 +60,13 @@ class HBNBCommand(cmd.Cmd):
                     except ValueError:
                         pass
                 #print(new_instance)
-            new_instance.save()
-            print(new_instance.id)
         except IndexError:
             pass
         except:
             print("** class doesn't exist **")
-
+            return
+        new_instance.save()
+        print(new_instance.id)
 
     def do_show(self, args):
         '''
