@@ -53,10 +53,11 @@ class FileStorage:
                 FileStorage.__objects[key] = class_name(**val)
         except FileNotFoundError:
             pass
-
+'''
     def delete(self, obj=None):
-        '''
+  
             Deletes an object from database
-        '''
-        '''FileStorage - type'''
+  
+
         FileStorage.__objects.pop((type(obj).__name__ + "." + obj.id), None)
+'''
