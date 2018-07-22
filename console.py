@@ -51,7 +51,16 @@ class HBNBCommand(cmd.Cmd):
             new_instance.save()
 
             for items in attributes:
+                items.replace(" ", "_")
                 pair = items.split('=')
+                try:
+                    pair[1] = int(pair[1])
+                except ValueError:
+                    try:
+                        pair[1] = float(pair[1])
+                    except ValueError:
+                        pass
+
                 setattr(new_instance, pair[0], pair[1])
                 new_instance.save()
 
