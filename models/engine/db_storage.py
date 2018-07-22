@@ -2,16 +2,42 @@
 '''
     Define class FileStorage
 '''
-import json
+
+import os
 import models
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
-
-class FileStorage:
+class DBStorage:
     '''
         Serializes instances to JSON file and deserializes to JSON file.
     '''
-    __file_path = "file.json"
-    __objects = {}
+    __engine = None
+    __session = None
+
+
+    def __init__(self):
+        '''
+            create new instance of DBStorage
+        '''
+        user = os.environ.get('HBNB_MYSQL_USER')
+        pwd = os.environ.get('HBNB_MYSQL_PWD')
+        host = os.environ.get('HBNB_MYSQL_HOST')
+        db = os.environ.get('HBNB_MYSQL_DB')
+
+        engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
+                 user, pwd, host, db), pool_pre_ping=True)
+
+        # Create all the tables in the database which are
+        # defined by Base's subclasses
+        Base.metadata.create_all(engine)
+        # create a configured "Session" class 
+        Session = sessionmaker(bind=engine)
+        # create a session
+        session = Session()
+        
+        if os.environ.get('HBNB_MYSQL_ENV') == 'env':
+            Base.metadata.drop(engine)
 
     def all(self, cls=None):
         '''
