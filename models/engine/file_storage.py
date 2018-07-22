@@ -17,6 +17,7 @@ class FileStorage:
         '''
             Return the dictionary
         '''
+        # need to add an if/else statement for if it is cls? Robert says
         return self.__objects
 
     def new(self, obj):
@@ -58,8 +59,7 @@ class FileStorage:
         '''
             Delete object from __object if exists
         '''
-        key = str(obj.__class__.__name__) + "." + str(obj.id)
-        remove = [k for k in FileStorage.__objects.keys() if k == key]
-        for k in remove:
-            del FileStorage.__objects[k]
+        if obj is not None:
+            key = str(obj.__class__.__name__) + "." + str(obj.id)
+        FileStorage.pop(key, None)
         FileStorage().save()
