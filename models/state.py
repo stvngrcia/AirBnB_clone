@@ -2,11 +2,11 @@
 '''
     Implementation of the State class
 '''
+from models.base_model import BaseModel, Base
+from sqlalchemy import Column, String, Integer
 
-from models.base_model import BaseModel
 
-
-class State(BaseModel):
+class State(BaseModel, Base):
     '''
         Implementation for the State.
     '''
