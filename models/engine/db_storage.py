@@ -69,18 +69,9 @@ class DBStorage:
         self.__session.commit()
 
     def reload(self):
-        env = os.getenv('HBENV')
-        user = os.getenv('HBNB_MYSQL_USER')
-        pwd = os.getenv('HBNB_MYSQL_PWD')
-        host = os.getenv('HBNB_MYSQL_HOST')
-        db = os.getenv('HBNB_MYSQL_DB')
-
-        self.__engine = create_engine(
-            'mysql+mysqldb://{}:{}@{}/{}'.format(
-                user, pwd, host, db, pool_pre_ping=True))
         from models.base_model import Base
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
         Session = scoped_session(session_factory)
-        session = Session()
+        self.__session = Session()
