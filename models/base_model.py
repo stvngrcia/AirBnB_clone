@@ -19,7 +19,7 @@ class BaseModel:
         created_at: the date it was created
         updated_at : the date it was updated
     '''
-    id = Column(Integer(60), nullable=False, primary_key=True)
+    id = Column(String(60), nullable=False, primary_key=True)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
@@ -30,7 +30,7 @@ class BaseModel:
         for key, val in kwargs.items():
             if "__class__" not in key:
                 setattr(self, key, val)
-        if (len(kwargs) == 0):
+        if "id" not in kwargs:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
