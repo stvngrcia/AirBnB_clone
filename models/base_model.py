@@ -30,11 +30,9 @@ class BaseModel:
             if "__class__" not in key:
                 setattr(self, key, val)
         if (len(kwargs) == 0):
-            self.id = Column(String(60), primary_key=True, nullable=False)
-            self.created_at = Column(DateTime, default=datetime.now(),
-                                     nullable=False)
-            self.updated_at = Column(DateTime, default=datetime.now(),
-                                     nullable=False)
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
         else:
             kwargs["created_at"] = datetime.strptime(kwargs["created_at"],
                                                      "%Y-%m-%dT%H:%M:%S.%f")
