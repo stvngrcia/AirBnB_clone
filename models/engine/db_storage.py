@@ -23,6 +23,7 @@ class DBStorage:
     """
     __engine = None
     __session = None
+
     def __init__(self):
         """Instance attribute for DBStorage"""
         self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".format(
