@@ -59,10 +59,8 @@ class FileStorage:
         Args:
             obj: input object class
         """
-        if obj is not None:
-            key = str(obj.__class__.__name__) + "." + str(obj.id)
-            if key in FileStorage.__objects:
-                new_dict = dict(self.__objects)
-                del new_dict[key]
-                self.__objects = new_dict
-                self.save()
+        if obj is None:
+            return
+        key = str(obj.__class__.__name__) + "." + str(obj.id)
+        del self.__objects[key]
+        self.save()
