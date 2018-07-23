@@ -59,7 +59,5 @@ class FileStorage:
         Args:
             obj: input object class
         """
-        if obj is not None:
-            key = str(obj.__class__.__name__) + "." + str(obj.id)
-            FileStorage.__objects.pop(key, None)
-            self.save()
+        FileStorage.__objects = {k: v for k, v in
+                                 FileStorage.__objects.items() if v != obj}
