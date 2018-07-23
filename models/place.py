@@ -57,3 +57,11 @@ class Place(BaseModel, Base):
                 amenity_inst = models.storage.all('Review').values()
                 all_amenities = [inst for inst in amenity_inst]
             return all_amenities
+
+        @amenities.setter
+        def amenities(self, obj):
+            """
+            get
+            """
+            if type(obj) is Amenity:
+                self.amenity_ids.append(obj.id)
