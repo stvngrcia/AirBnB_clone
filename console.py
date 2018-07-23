@@ -5,7 +5,7 @@
 import cmd
 import json
 import shlex
-from models.engine.file_storage import FileStorage
+from models import storage
 from models.base_model import BaseModel
 from models.user import User
 from models.place import Place
@@ -48,20 +48,20 @@ class HBNBCommand(cmd.Cmd):
             if len(args) > 1:
                 my_dict = dict(arg.split('=') for arg in args[1:])
                 for key, value in my_dict.items():
-                    if '_' in value:
-                        value = value.replace('_', ' ')
-                    try:
-                        value = eval(value)
-                    except:
-                        pass
-                    setattr(new_instance, key, value)
-                new_instance.save()
-            else:
-                new_instance.save()
+                    if hasattr(new_instance, key):
+                        if '_' in value:
+                            value = value.replace('_', ' ')
+                            try:
+                                value = eval(value)
+                            except:
+                                pass
+                        setattr(new_instance, key, value)
+            new_instance.save()
             print(new_instance.id)
 
         except:
             print("** class doesn't exist **")
+
 
     def do_show(self, args):
         '''
@@ -75,7 +75,6 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 1:
             print("** instance id missing **")
             return
-        storage = FileStorage()
         storage.reload()
         obj_dict = storage.all()
         try:
@@ -104,7 +103,6 @@ class HBNBCommand(cmd.Cmd):
             return
         class_name = args[0]
         class_id = args[1]
-        storage = FileStorage()
         storage.reload()
         obj_dict = storage.all()
         try:
@@ -125,7 +123,6 @@ class HBNBCommand(cmd.Cmd):
             based or not on the class name.
         '''
         obj_list = []
-        storage = FileStorage()
         storage.reload()
         objects = storage.all()
         try:
@@ -148,7 +145,6 @@ class HBNBCommand(cmd.Cmd):
             Update an instance based on the class name and id
             sent as args.
         '''
-        storage = FileStorage()
         storage.reload()
         args = shlex.split(args)
         if len(args) == 0:
@@ -194,7 +190,6 @@ class HBNBCommand(cmd.Cmd):
             Counts/retrieves the number of instances.
         '''
         obj_list = []
-        storage = FileStorage()
         storage.reload()
         objects = storage.all()
         try:
