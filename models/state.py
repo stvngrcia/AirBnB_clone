@@ -11,7 +11,7 @@ class State(BaseModel, Base):
     '''
         Implementation for the State.
     '''
-    __tablename__='states'
+    __tablename__ = 'states'
     name = Column(String(128), nullable=False)
     city = relationship('City', backref='state')
 
@@ -21,5 +21,5 @@ class State(BaseModel, Base):
         Returns list of City instances with specific state id
         """
         city_inst = models.storage.all('City').values()
-        all_cities = [inst for inst in city_inst if obj.state_id == self.id]
+        all_cities = [inst for inst in city_inst if inst.state_id == self.id]
         return all_cities

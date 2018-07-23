@@ -11,6 +11,6 @@ class City(BaseModel, Base):
     '''
         Define the class City that inherits from BaseModel.
     '''
-    __tablename__='cities'
+    __tablename__ = 'cities'
     state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
     name = Column(String(128), nullable=False)
