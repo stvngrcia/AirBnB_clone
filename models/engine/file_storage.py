@@ -59,5 +59,14 @@ class FileStorage:
         Args:
             obj: input object class
         """
-        FileStorage.__objects = {k: v for k, v in
-                                 FileStorage.__objects.items() if v != obj}
+        flag = 0
+
+        if obj:
+            for record in self.__objects:
+                test = record.split(".")
+                if test[1] == obj.id:
+                    flag = record
+
+        if flag != 0:
+            self.__objects.pop(flag, None)
+            self.save()
