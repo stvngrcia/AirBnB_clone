@@ -2,7 +2,7 @@
 '''
     This module defines the BaseModel class
 '''
-from sqlalchemy import Integer, String, Column
+from sqlalchemy import Integer, String, Column, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 import uuid
 from datetime import datetime
@@ -22,6 +22,7 @@ class BaseModel:
     id = Column(String(60), nullable=False, primary_key=True)
     created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
+
     def __init__(self, *args, **kwargs):
         '''
             Initialize public instance attributes.

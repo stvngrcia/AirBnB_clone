@@ -2,7 +2,7 @@
 '''
     Implementation of the State class
 '''
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
 
@@ -13,7 +13,7 @@ class State(BaseModel, Base):
     '''
     __tablename__='states'
     name = Column(String(128), nullable=False)
-    city = relationship('City', backref='state')
+    city = relationship('City', backref='state', cascade = 'all, delete')
 
     @property
     def cities(self):
@@ -21,5 +21,5 @@ class State(BaseModel, Base):
         Returns list of City instances with specific state id
         """
         city_inst = models.storage.all('City').values()
-        all_cities = [inst for inst in city_inst if obj.state_id == self.id]
+        all_cities = [inst for inst in city_inst if inst.state_id == self.id]
         return all_cities

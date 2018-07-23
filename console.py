@@ -2,9 +2,12 @@
 '''
     Implementing the console for the HBnB project.
 '''
+import os
 import cmd
 import json
 import shlex
+import models
+from models.engine.db_storage import DBStorage
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 from models.user import User
@@ -49,15 +52,16 @@ class HBNBCommand(cmd.Cmd):
         if args[0] in classes:
             new_instance = classes[args[0]]()
             for arg in args[1:]:
-                key = args[1].split("=")[0]
-                val = args[1].split("=")[1].replace('_', ' ')
+                key = arg.split("=")[0]
+                val = arg.split("=")[1].replace('_', ' ')
                 try:
                     int(val)
                 except:
-                    try:
-                        float(val)
-                    except:
-                        continue
+                    pass
+                try:
+                    float(val)
+                except:
+                    pass
                 setattr(new_instance, key, val)
             new_instance.save()
             print(new_instance.id)
@@ -77,8 +81,7 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 1:
             print("** instance id missing **")
             return
-        storage = FileStorage()
-        storage.reload()
+        models.storage.reload()
         obj_dict = storage.all()
         try:
             eval(args[0])
@@ -106,8 +109,7 @@ class HBNBCommand(cmd.Cmd):
             return
         class_name = args[0]
         class_id = args[1]
-        storage = FileStorage()
-        storage.reload()
+        models.storage.reload()
         obj_dict = storage.all()
         try:
             eval(class_name)
@@ -127,9 +129,15 @@ class HBNBCommand(cmd.Cmd):
             based or not on the class name.
         '''
         obj_list = []
-        storage = FileStorage()
+        if os.getenv == 'db':
+            storage = DBStorage()
+        else:
+            storage = FileStorage()
         storage.reload()
-        objects = storage.all()
+        if args:
+            objects = models.storage.all(args)
+        else:
+            object = models.storage.all()
         try:
             if len(args) != 0:
                 eval(args)
@@ -150,8 +158,7 @@ class HBNBCommand(cmd.Cmd):
             Update an instance based on the class name and id
             sent as args.
         '''
-        storage = FileStorage()
-        storage.reload()
+        models.storage.reload()
         args = shlex.split(args)
         if len(args) == 0:
             print("** class name missing **")
