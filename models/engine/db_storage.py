@@ -45,16 +45,14 @@ class DBStorage:
            if cls not specified, returns all classes
         '''
         result = {}
-        print("*********************{}".format(cls))
         if cls:
-            for obj in self.__session.query(eval(cls)().__class__).all():
+            for obj in self.__session.query(cls).all():
                 key = "{}.{}".format(obj.__class__.__name__, obj.id)
                 result[key] = obj
         else:
-            all_obj = [User, State, City, Amenity, Place, Review]
-            for i in all_obj:
-                obj = i
-                for obj in self.__session.query(cls).all():
+            for sub_c in Base.__subclasses__():
+                table = self.__session.query(sub_c).all()
+                for obj in table:
                     key = "{}.{}".format(obj.__class__.__name__, obj.id)
                     result[key] = obj
         return(result)

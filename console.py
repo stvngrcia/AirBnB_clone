@@ -134,10 +134,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             storage = FileStorage()
         storage.reload()
-        if args:
-            objects = models.storage.all(args)
-        else:
-            object = models.storage.all()
+        objects = models.storage.all()
         try:
             if len(args) != 0:
                 eval(args)

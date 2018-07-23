@@ -3,7 +3,7 @@
     Implementation of the Review class
 '''
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, String
+from sqlalchemy import Column, String, ForeignKey
 from models.base_model import BaseModel
 
 
