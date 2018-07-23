@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 ''' Database Storage '''
 import os
-from models.base_model import BaseModel
-from models.base_model import Base
+from models.base_model import BaseModel, Base
+from sqlalchemy import MetaData
 from models.user import User
 from models.state import State
 from models.city import City
@@ -58,7 +58,11 @@ class DBStorage:
         return(result)
 
     def new(self, obj):
-        self.__session.add(obj)
+        if obj:
+            try:
+                self.__session.add(obj)
+            except:
+                pass
 
     def delete(self, obj=None):
         if obj:

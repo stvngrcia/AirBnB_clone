@@ -4,10 +4,10 @@
 '''
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 
 
-class User(BaseModel):
+class User(BaseModel, Base):
     '''
         Definition of the User class
     '''
