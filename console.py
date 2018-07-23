@@ -2,9 +2,12 @@
 '''
     Implementing the console for the HBnB project.
 '''
+import os
 import cmd
 import json
 import shlex
+import models
+from models.engine.db_storage import DBStorage
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 from models.user import User
@@ -14,6 +17,8 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
+           "Place": Place, "Review": Review, "State": State, "User": User}
 
 class HBNBCommand(cmd.Cmd):
     '''
@@ -39,17 +44,30 @@ class HBNBCommand(cmd.Cmd):
             Create a new instance of class BaseModel and saves it
             to the JSON file.
         '''
+
         if len(args) == 0:
             print("** class name missing **")
             return
-        try:
-            args = shlex.split(args)
-            new_instance = eval(args[0])()
+        args = shlex.split(args)
+        if args[0] in classes:
+            new_instance = classes[args[0]]()
+            for arg in args[1:]:
+                key = arg.split("=")[0]
+                val = arg.split("=")[1].replace('_', ' ')
+                try:
+                    int(val)
+                except:
+                    pass
+                try:
+                    float(val)
+                except:
+                    pass
+                setattr(new_instance, key, val)
             new_instance.save()
             print(new_instance.id)
-
-        except:
+        else:
             print("** class doesn't exist **")
+
 
     def do_show(self, args):
         '''
@@ -63,8 +81,7 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 1:
             print("** instance id missing **")
             return
-        storage = FileStorage()
-        storage.reload()
+        models.storage.reload()
         obj_dict = storage.all()
         try:
             eval(args[0])
@@ -92,8 +109,7 @@ class HBNBCommand(cmd.Cmd):
             return
         class_name = args[0]
         class_id = args[1]
-        storage = FileStorage()
-        storage.reload()
+        models.storage.reload()
         obj_dict = storage.all()
         try:
             eval(class_name)
@@ -113,9 +129,12 @@ class HBNBCommand(cmd.Cmd):
             based or not on the class name.
         '''
         obj_list = []
-        storage = FileStorage()
+        if os.getenv == 'db':
+            storage = DBStorage()
+        else:
+            storage = FileStorage()
         storage.reload()
-        objects = storage.all()
+        objects = models.storage.all()
         try:
             if len(args) != 0:
                 eval(args)
@@ -136,8 +155,7 @@ class HBNBCommand(cmd.Cmd):
             Update an instance based on the class name and id
             sent as args.
         '''
-        storage = FileStorage()
-        storage.reload()
+        models.storage.reload()
         args = shlex.split(args)
         if len(args) == 0:
             print("** class name missing **")
