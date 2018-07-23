@@ -3,9 +3,10 @@
     Define the class City.
 '''
 from models.base_model import BaseModel, Base
+from models.state import State
+from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String
 from sqlalchemy import ForeignKey
-
 
 class City(BaseModel, Base):
     '''

@@ -4,7 +4,10 @@
 '''
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String, Float, ForeignKey
+<<<<<<< HEAD
 from sqlalchemy import Table
+=======
+>>>>>>> b38a10583372b2e130f925b0a293694c1197c6a3
 from models.base_model import BaseModel
 
 
