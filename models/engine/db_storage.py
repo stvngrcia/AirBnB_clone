@@ -12,7 +12,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
-classes = [State, City]
+classes = [User, State, City, Place, Review, Amenity]
 
 
 class DBStorage:
