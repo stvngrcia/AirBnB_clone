@@ -11,7 +11,7 @@ class State(BaseModel, Base):
     '''
         Implementation for the State.
     '''
-    __tablename__='states'
+    __tablename__ = 'states'
     name = Column(String(128), nullable=False)
     city = relationship('City', backref='state', cascade = 'all, delete')
 
