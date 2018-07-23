@@ -13,7 +13,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-
+from ast import literal_eval
 
 class HBNBCommand(cmd.Cmd):
     '''
@@ -46,26 +46,21 @@ class HBNBCommand(cmd.Cmd):
             args = shlex.split(args)
             new_instance = eval(args[0])()
             for i in args[1:]:
-                #print(i)
                 key = i.split('=')[0]
-                #print(key)
                 value = i.split('=')[1]
                 value = value.replace("_", " ")
-                #print(value)
                 if hasattr(new_instance, key) is True:
                     try:
-                        convert = type(getattr(new_instance, key))
-                        value = convert(value)
-                        setattr(new_instance, key, value)
-                    except ValueError:
+                        #turns str into int | float
+                        value = literal_eval(value)
+                    except (ValueError, IndexError, NameError, SyntaxError):
                         pass
-                #print(new_instance)
+                setattr(new_instance, key, value)
             new_instance.save()
             print(new_instance.id)
-        except IndexError:
-            pass
         except:
             print("** class doesn't exist **")
+            return
 
 
     def do_show(self, args):

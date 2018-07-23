@@ -1,12 +1,13 @@
 #!/usr/bin/python3
 '''
-    Define class FileStorage
+    Define class DBStorage
 '''
 
 import os
 import models
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from models.base_model import Base
 
 class DBStorage:
     '''
@@ -24,26 +25,35 @@ class DBStorage:
         pwd = os.environ.get('HBNB_MYSQL_PWD')
         host = os.environ.get('HBNB_MYSQL_HOST')
         db = os.environ.get('HBNB_MYSQL_DB')
-
-        engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
+        
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
                  user, pwd, host, db), pool_pre_ping=True)
-
         # Create all the tables in the database which are
         # defined by Base's subclasses
-        Base.metadata.create_all(engine)
-        # create a configured "Session" class 
-        Session = sessionmaker(bind=engine)
-        # create a session
-        session = Session()
-        
-        if os.environ.get('HBNB_MYSQL_ENV') == 'env':
+        Base.metadata.create_all(self.__engine)
+
+        if os.environ.get('HBNB_MYSQL_ENV') == "test":
             Base.metadata.drop(engine)
+
 
     def all(self, cls=None):
         '''
             Return the dictionary
         '''
-        return self.__objects
+        dict_db = {}
+
+        if cls != None:
+            entry = self.__session.query(models.classes[cls]).all()
+            for obj in entry:
+                print("{}.{}".format(obj.__class__.__name__, obj.id))
+                dict_db[key] = obj
+        else:
+            for cls_name in models.classes:
+                if cls_name != "BaseModel": 
+                    self.__session.query().all()
+                    print("{}.{}".format(cls_name.__class__.__name__, cls_name.id))
+                    dict_db[key] = obj
+        return dict_db
 
     def new(self, obj):
         '''
@@ -51,41 +61,27 @@ class DBStorage:
             Arguments:
                 obj : An instance object.
         '''
-        key = str(obj.__class__.__name__) + "." + str(obj.id)
-        value_dict = obj
-        FileStorage.__objects[key] = value_dict
+        self.__session.add(obj)
 
     def save(self):
         '''
             Serializes __objects attribute to JSON file.
         '''
-        objects_dict = {}
-        for key, val in FileStorage.__objects.items():
-            objects_dict[key] = val.to_dict()
-
-        with open(FileStorage.__file_path, mode='w', encoding="UTF8") as fd:
-            json.dump(objects_dict, fd)
+        self.__session.commit()
 
     def reload(self):
         '''
             Deserializes the JSON file to __objects.
         '''
-        try:
-            with open(FileStorage.__file_path, encoding="UTF8") as fd:
-                FileStorage.__objects = json.load(fd)
-            for key, val in FileStorage.__objects.items():
-                class_name = val["__class__"]
-                class_name = models.classes[class_name]
-                FileStorage.__objects[key] = class_name(**val)
-        except FileNotFoundError:
-            pass
+        # create a configured "Session" class 
+        Session = sessionmaker(bind=self.__engine)
+        # create a session
+        session = Session()
+        self.__session = session
+
 
     def delete(self, obj=None):
         '''
             Delete object from __object if exists
         '''
-        key = str(obj.__class__.__name__) + "." + str(obj.id)
-        remove = [k for k in FileStorage.__objects.keys() if k == key]
-        for k in remove:
-            del FileStorage.__objects[k]
-        FileStorage().save()
+

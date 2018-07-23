@@ -6,7 +6,7 @@ import uuid
 from datetime import datetime
 import models
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, DateTime
 
 Base = declarative_base()
 
@@ -15,8 +15,8 @@ class BaseModel:
         Base class for other classes to be used for the duration.
     '''
     id = Column(String(60), primary_key=True, nullable=False)
-    created_at = Column(default=datetime.utcnow(), nullable=False)
-    updated_at = Column(default=datetime.utcnow(), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
 
 
     def __init__(self, *args, **kwargs):
@@ -67,10 +67,8 @@ class BaseModel:
         cp_dct['updated_at'] = self.updated_at.strftime("%Y-%m-%dT%H:%M:%S.%f")
         cp_dct['created_at'] = self.created_at.strftime("%Y-%m-%dT%H:%M:%S.%f")
 
-        remove = [k for k, v in cp_dict.items() if k == "_sa_instance_state"]
-        for k in remove:
-            del cp_dict[k]
-
+        if hasattr(self, "_sa_instance_state"):
+            cp_dct.pop("_sa_instance_state", None)
         return (cp_dct)
 
     def delete(self):

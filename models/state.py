@@ -4,16 +4,18 @@
 '''
 
 from models.base_model import BaseModel, Base
-from models import HBNB_TYPE_STORAGE
-from sqlalchemy import Column, Integer, String, ForeignKey
+import os
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
 
 class State(BaseModel, Base):
     '''
         Implementation for the State.
     '''
-    if HBNB_TYPE_STORAGE == "db":
-        __tablename__ = "states"
-        name = Column(String(128), nullable=False)
+    __tablename__ = "states"
 
-    else:
-        name = ""
+    name = ""
+
+    if os.environ.get("HBNB_TYPE_STORAGE") == "db":
+        name = Column(String(128), nullable=False)
+        cities = relationship("City", backref="states", cascade="all, delete-orphan")
