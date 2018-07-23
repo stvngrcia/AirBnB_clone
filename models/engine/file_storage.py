@@ -56,7 +56,7 @@ class FileStorage:
 
     def delete(self, obj=None):
         '''
-        Test delete feature
+        Test delete features
         '''
         if obj is not None:
             key = str(obj.__class__.__name__) + "." + str(obj.id)
