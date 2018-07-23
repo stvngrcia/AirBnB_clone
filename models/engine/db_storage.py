@@ -67,7 +67,8 @@ class DBStorage:
         Args:
             obj: obj to delete
         """
-        self.__session.delete(obj)
+        if obj is not None:
+            self.__session.delete(obj)
 
     def reload(self):
         """relaodign session"""
