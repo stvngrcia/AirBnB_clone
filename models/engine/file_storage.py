@@ -62,5 +62,7 @@ class FileStorage:
         if obj is not None:
             key = str(obj.__class__.__name__) + "." + str(obj.id)
             if key in FileStorage.__objects:
-                del FileStorage.__objects[key]
+                new_dict = dict(self.__objects)
+                del new_dict[key]
+                self.__objects = new_dict
                 self.save()
