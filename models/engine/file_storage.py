@@ -8,7 +8,7 @@ import models
 
 class FileStorage:
     '''
-        Serializes instances to JSON file and deserializes to JSON file.
+        Serializes instances to JSON file and deserializes to JSON file
     '''
     __file_path = "file.json"
     __objects = {}
@@ -68,5 +68,5 @@ class FileStorage:
         '''
         if obj is not None:
             key = str(obj.__class__.__name__) + "." + str(obj.id)
-        FileStorage.pop(key, None)
-        FileStorage().save()
+            FileStorage().__objects.pop(key, None)
+            FileStorage().save()
