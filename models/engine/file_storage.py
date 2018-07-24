@@ -8,21 +8,29 @@ import models
 
 class FileStorage:
     '''
-        Serializes instances to JSON file and deserializes to JSON file.
+        Serializes instances to JSON file and deserializes to JSON file
     '''
     __file_path = "file.json"
     __objects = {}
 
-    def all(self):
+    def all(self, cls=None):
         '''
             Return the dictionary
         '''
-        return self.__objects
+        dict_fs = {}
+
+        if cls == None:
+            return self.__objects
+        else:
+            for k, v in self.__objects.items():
+                if v.__class__.__name__ == cls:
+                    dict_fs[k] = v
+            return dict_fs
 
     def new(self, obj):
         '''
             Set in __objects the obj with key <obj class name>.id
-            Aguments:
+            Arguments:
                 obj : An instance object.
         '''
         key = str(obj.__class__.__name__) + "." + str(obj.id)
@@ -53,3 +61,12 @@ class FileStorage:
                 FileStorage.__objects[key] = class_name(**val)
         except FileNotFoundError:
             pass
+
+    def delete(self, obj=None):
+        '''
+            Delete object from __object if exists
+        '''
+        if obj is not None:
+            key = str(obj.__class__.__name__) + "." + str(obj.id)
+            FileStorage().__objects.pop(key, None)
+            FileStorage().save()
