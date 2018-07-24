@@ -2,7 +2,11 @@
 '''
     Define the class City.
 '''
-from models.base_model import BaseModel
+import sqlalchemy
+from sqlalchemy import Column, Integer, String, create_engine, DateTime
+from sqlalchemy import ForeignKey
+from sqlalchemy.ext.declarative import declarative_base
+from models.base_model import BaseModel, Base
 
 
 class City(BaseModel, Base):
@@ -16,6 +20,6 @@ class City(BaseModel, Base):
     )
     state_id = Column(
         String(60),
-        ForeignKey("State.id"),
+        ForeignKey("states.id"),
         nullable=False
     )

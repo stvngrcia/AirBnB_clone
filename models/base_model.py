@@ -6,6 +6,9 @@ import sqlalchemy
 from sqlalchemy import Column, Integer, String, create_engine, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
+import uuid
+import models
+
 '''from models.city import City
 from models.state import State
 '''
