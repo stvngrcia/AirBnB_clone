@@ -59,8 +59,10 @@ class FileStorage:
         Args:
             obj: input object class
         """
-        if obj:
-            key = str(obj.__class__.__name__) + "." + str(obj.id)
-            if key in self.__objects:
-                del self.__objects[key]
+        new_dict = dict(FileStorage.__objects)
+        key_del = obj
+        for key, value in new_dict.items():
+            if value == key_del:
+                del(obj)
+                del FileStorage.__objects[key]
                 self.save()
