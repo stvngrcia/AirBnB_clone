@@ -53,15 +53,14 @@ class HBNBCommand(cmd.Cmd):
                             value = value.replace('_', ' ')
                             try:
                                 value = eval(value)
-                            except:
+                            except Exception:
                                 pass
                         setattr(new_instance, key, value)
             new_instance.save()
             print(new_instance.id)
 
-        except:
+        except Exception:
             print("** class doesn't exist **")
-
 
     def do_show(self, args):
         '''
@@ -220,7 +219,7 @@ class HBNBCommand(cmd.Cmd):
             cmd_arg = args[0] + " " + args[2]
             func = functions[args[1]]
             func(cmd_arg)
-        except:
+        except Exception:
             print("*** Unknown syntax:", args[0])
 
 
