@@ -3,7 +3,7 @@
     Define class DBStorage
 '''
 
-import os
+from os import getenv
 import models
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -21,10 +21,10 @@ class DBStorage:
         '''
             create new instance of DBStorage
         '''
-        user = os.environ.get('HBNB_MYSQL_USER')
-        pwd = os.environ.get('HBNB_MYSQL_PWD')
-        host = os.environ.get('HBNB_MYSQL_HOST')
-        db = os.environ.get('HBNB_MYSQL_DB')
+        user = getenv('HBNB_MYSQL_USER')
+        pwd = getenv('HBNB_MYSQL_PWD')
+        host = getenv('HBNB_MYSQL_HOST')
+        db = getenv('HBNB_MYSQL_DB')
         
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
                  user, pwd, host, db), pool_pre_ping=True)
@@ -32,13 +32,13 @@ class DBStorage:
         # defined by Base's subclasses
         Base.metadata.create_all(self.__engine)
 
-        if os.environ.get('HBNB_MYSQL_ENV') == "test":
-            Base.metadata.drop(engine)
+        if getenv('HBNB_MYSQL_ENV') == "test":
+            Base.metadata.drop_all(self.__engine)
 
 
     def all(self, cls=None):
         '''
-            Return the dictionary
+            Return a dictionary of SQL objects
         '''
         dict_db = {}
         if cls != None:
@@ -58,7 +58,7 @@ class DBStorage:
 
     def new(self, obj):
         '''
-            Set in __objects the obj with key <obj class name>.id
+            Set in obj as a database entry
             Arguments:
                 obj : An instance object.
         '''
@@ -66,23 +66,24 @@ class DBStorage:
 
     def save(self):
         '''
-            Serializes __objects attribute to JSON file.
+            Commit the saves to database
         '''
         self.__session.commit()
 
     def reload(self):
         '''
-            Deserializes the JSON file to __objects.
+            Starts a global session
         '''
-        # create a configured "Session" class 
-        Session = sessionmaker(bind=self.__engine)
-        # create a session
-        session = Session()
-        self.__session = session
+        # create a configured factory class 
+        factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        # create a global session for all to use
+        Session = scoped_session(factory)
+        self.__session = Session()
 
 
     def delete(self, obj=None):
         '''
-            Delete object from __object if exists
+            Delete object from database if exists
         '''
-
+        if obj is not None:
+            self.__session.delete(obj)
