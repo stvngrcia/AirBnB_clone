@@ -5,7 +5,7 @@
 import cmd
 import json
 import shlex
-from models.engine.file_storage import FileStorage
+from models import storage
 from models.base_model import BaseModel
 from models.user import User
 from models.place import Place
@@ -13,7 +13,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-
+from ast import literal_eval
 
 class HBNBCommand(cmd.Cmd):
     '''
@@ -45,11 +45,25 @@ class HBNBCommand(cmd.Cmd):
         try:
             args = shlex.split(args)
             new_instance = eval(args[0])()
+            for i in args[1:]:
+                try:
+                    key = i.split('=')[0]
+                    value = i.split('=')[1]
+                    if hasattr(new_instance, key) is True:
+                        value = value.replace("_", " ")
+                        try:
+                            #turns str into int | float
+                            value = literal_eval(value)
+                        except:
+                            pass
+                        setattr(new_instance, key, value)
+                except (ValueError, IndexError, NameError, SyntaxError):
+                    pass
             new_instance.save()
             print(new_instance.id)
-
-        except:
+        except KeyError:
             print("** class doesn't exist **")
+            return
 
     def do_show(self, args):
         '''
@@ -112,22 +126,23 @@ class HBNBCommand(cmd.Cmd):
             Prints all string representation of all instances
             based or not on the class name.
         '''
+        args = shlex.split(args)
         obj_list = []
-        storage = FileStorage()
-        storage.reload()
-        objects = storage.all()
+        if len(args) == 0:
+            objects = storage.all()
+        else:
+            objects = storage.all(args[0])
         try:
             if len(args) != 0:
-                eval(args)
+                eval(args[0])
         except NameError:
             print("** class doesn't exist **")
             return
-        for key, val in objects.items():
-            if len(args) != 0:
-                if type(val) is eval(args):
-                    obj_list.append(val)
-            else:
+        try:
+            for key, val in objects.items():
                 obj_list.append(val)
+        except:
+            pass
 
         print(obj_list)
 
