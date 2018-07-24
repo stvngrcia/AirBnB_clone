@@ -11,7 +11,7 @@ from os import getenv
 
 class Review(BaseModel):
     '''
-        Implementation for the Review.
+        Implementation for the Review
     '''
     __tablename__ = "reviews"
 
