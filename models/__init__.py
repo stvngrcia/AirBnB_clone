@@ -20,9 +20,9 @@ classes = {"User": User, "BaseModel": BaseModel,
 
 storage_type = getenv('HBNB_TYPE_STORAGE')
 
-    if (storage_type == 'db'):
-        storage = DBStorage()
-        storage.reload()
-    else:
-        storage = FileStorage()
-        storage.reload()
+if (storage_type == 'db'):
+    storage = DBStorage()
+    storage.reload()
+else:
+    storage = FileStorage()
+    storage.reload()
