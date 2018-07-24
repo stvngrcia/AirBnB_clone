@@ -5,8 +5,9 @@
 import MySQLdb
 import sqlalchemy
 import sys
-from model_state import Base, State
-from model_city import City
+from models.base_model import BaseModel, Base
+from models.state import State
+from model.city import City
 from sqlalchemy import Column, Integer, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -27,8 +28,8 @@ environ = getenv('HBNB_ENV')
 def __init__(self):
     self.__engine = create_engine(
         'mysql+mysqldb://{}:{}@{}/{}'.format(user,
-                                                pswd
-                                                host
+                                                pswd,
+                                                host,
                                                 db),
         pool_pre_ping=True)
 
@@ -46,11 +47,10 @@ def all(self, cls=None):
             '''Should return class name.object id'''
             key = val.__class__.__name__ + "." + val.id
             obj_dict[key] = val
-    else:
+'''    else:
         for val in self.__session.query(
-        
+'''        
 
-    return obj_dict
 
 def new(self, obj):
     self.__session.add(obj)
