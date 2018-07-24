@@ -4,6 +4,7 @@
 '''
 
 from models.engine.file_storage import FileStorage
+from models.engine.db_storage import DBStorage
 from models.base_model import BaseModel
 from models.user import User
 from models.place import Place
@@ -17,5 +18,11 @@ classes = {"User": User, "BaseModel": BaseModel,
            "City": City, "Amenity": Amenity,
            "Review": Review}
 
-storage = FileStorage()
-storage.reload()
+storage_type = getenv('HBNB_TYPE_STORAGE')
+
+    if (storage_type == 'db'):
+        storage = DBStorage()
+        storage.reload()
+    else:
+        storage = FileStorage()
+        storage.reload()
