@@ -61,7 +61,7 @@ class HBNBCommand(cmd.Cmd):
                     pass
             new_instance.save()
             print(new_instance.id)
-        except:
+        except KeyError:
             print("** class doesn't exist **")
             return
 
