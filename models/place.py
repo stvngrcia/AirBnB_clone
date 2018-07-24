@@ -6,6 +6,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from os import getenv
+import models
 
 place_amenity = Table(
     "place_amenity", Base.metadata,
@@ -44,18 +45,18 @@ class Place(BaseModel, Base):
         get_all = models.storage.all("Review").values()
         return [obj for obj in get_all if obj.place_id == self.id]
 
-    if getenv("HBNB_TYPE_STORAGE") == "FileStorage":
+    if getenv("HBNB_TYPE_STORAGE") != "db":
         @property
         def amenities(self):
             """This is the property setter for reviews
             Return:
             all object in list
             """
-            get_all = models.storage.all("Amenity").values()
-            return [obj for obj in get_all if obj.amenity_id == Amenity.id]
+            return self.amenity_ids
 
         @amenities.setter
         def amenities(self, obj):
             """setting for amenities"""
+            from models.amenity import Amenity
             if type(obj) == Amenity:
                 self.amenity_ids.append(obj.id)
