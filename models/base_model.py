@@ -6,8 +6,9 @@ import sqlalchemy
 from sqlalchemy import Column, Integer, String, create_engine, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
-from models import City, State
-
+'''from models.city import City
+from models.state import State
+'''
 
 Base = declarative_base()
 
@@ -17,8 +18,8 @@ class BaseModel:
     '''
 
     id = Column(String(60), nullable=False, unique=True, primary_key=True)
-    created_at = Column(DateTime, default=datetime.datetime.utcnow(), nullable=False)
-    updated_at = Column(Datetime, default=datetime.datetime.utcnow(), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
 
     def __init__(self, *args, **kwargs):
         '''
