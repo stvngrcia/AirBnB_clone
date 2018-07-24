@@ -8,6 +8,7 @@ import time
 import json
 import unittest
 from models.base_model import BaseModel
+from models.state import State
 from models.engine.file_storage import FileStorage
 
 
@@ -39,6 +40,28 @@ class testFileStorage(unittest.TestCase):
         '''
         storage_all = self.storage.all()
         self.assertIsInstance(storage_all, dict)
+
+    def test_delete(self):
+        new_state = State()
+        new_state.name = "California***********"
+        fs = FileStorage()
+        fs.new(new_state)
+        fs.save()
+        self.assertTrue(os.path.isfile("file.json"))
+        with open("file.json", encoding="UTF8") as fd:
+            content = fd.read()
+        flag = 1
+        if new_state.id in content:
+            flag = 0
+        self.assertTrue(flag == 0)
+        fs.delete(new_state)
+        fs.save()
+        with open("file.json", encoding="UTF8") as fd:
+            content = fd.read()
+        flag = 0
+        if new_state.id in content:
+            flag = 1
+        self.assertTrue(flag == 0)
 
     def test_new_method(self):
         '''
