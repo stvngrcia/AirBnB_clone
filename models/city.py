@@ -2,7 +2,8 @@
 '''
     Define the class City.
 '''
-from models.base_model import BaseModel, Base
+from models.base_model import BaseModel
+
 
 class City(BaseModel, Base):
     '''
