@@ -45,7 +45,7 @@ def all(self, cls=None):
         for val in self.__session.query(cls):
             '''Should return class name.object id'''
             key = val.__class__.__name__ + "." + val.id
-            obj_dict[key] = value
+            obj_dict[key] = val
     else:
         for val in self.__session.query(
         
