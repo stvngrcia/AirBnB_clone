@@ -75,7 +75,9 @@ class TestPlace(unittest.TestCase):
         self.assertEqual(type(self.place1.longitude), float)
         self.assertEqual(type(self.place1.amenity_ids), list)
 
-    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', "won't work in db")
+    @unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "won't work in db")
     def test_save(self):
         self.place1.save()
         self.assertNotEqual(self.place1.created_at, self.place1.updated_at)

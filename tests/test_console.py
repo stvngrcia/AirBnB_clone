@@ -15,6 +15,7 @@ class test_console(unittest.TestCase):
     ''' Test the console module'''
 
     """Check for Pep8 style conformance"""
+
     def test_pep8_console(self):
         """Pep8 console.py"""
         style = pep8.StyleGuide(quiet=False)
@@ -53,7 +54,9 @@ class test_console(unittest.TestCase):
         console.onecmd("all")
         self.assertTrue(isinstance(self.capt_out.getvalue(), str))
 
-    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', "won't work in db")
+    @unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "won't work in db")
     def test_show(self):
         '''
             Testing that show exists
@@ -68,9 +71,11 @@ class test_console(unittest.TestCase):
         console.onecmd("show User " + user_id)
         x = (self.capt_out.getvalue())
         sys.stdout = self.backup
-        self.assertTrue(str is type(x))
+        self.assertTrue(isinstance(x, str))
 
-    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', "won't work in db")
+    @unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "won't work in db")
     def test_show_class_name(self):
         '''
             Testing the error messages for class name missing.
@@ -87,7 +92,9 @@ class test_console(unittest.TestCase):
         sys.stdout = self.backup
         self.assertEqual("** class name missing **\n", x)
 
-    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', "won't work in db")
+    @unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "won't work in db")
     def test_show_class_name(self):
         '''
             Test show message error for id missing
@@ -104,7 +111,9 @@ class test_console(unittest.TestCase):
         sys.stdout = self.backup
         self.assertEqual("** instance id missing **\n", x)
 
-    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', "won't work in db")
+    @unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "won't work in db")
     def test_show_no_instance_found(self):
         '''
             Test show message error for id missing
@@ -121,7 +130,9 @@ class test_console(unittest.TestCase):
         sys.stdout = self.backup
         self.assertEqual("** no instance found **\n", x)
 
-    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', "won't work in db")
+    @unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "won't work in db")
     def test_create_fileStorage(self):
         '''
             Test that create works

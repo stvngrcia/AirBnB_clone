@@ -12,27 +12,10 @@ import os
 from sqlalchemy import Column, Integer, String, create_engine
 from sqlalchemy.orm import sessionmaker
 
+
 @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') != 'db',
                  "only testing db storage")
-
 class test_DBStorage(unittest.TestCase):
-
-    def setup(self):
-        env = os.getenv('HBNB_ENV')
-        user = os.getenv('HBNB_MYSQL_USER')
-        pwd = os.getenv('HBNB_MYSQL_PWD')
-        host = os.getenv('HBNB_MYSQL_HOST')
-        db = os.getenv('HBNB_MYSQL_DB')
-
-        self.__engine = create_engine(
-            'mysql+mysqldb://{}:{}@{}/{}'.format(
-                user, pwd, host, db, pool_pre_ping=True))
-        Base.metadata.create_all(self.__engine)
-        if env == 'test':
-            Base.metadata.drop_all(self.__engine)
-
-        Session = sessionmaker(bind=self.__engine)
-        self.session = Session()
 
     def testState(self):
         state = State(name="Greg")
@@ -57,4 +40,4 @@ class test_DBStorage(unittest.TestCase):
 
     def teardown(self):
         self.session.close()
-        self.__transaction.rollback()
+        self.session.rollback()

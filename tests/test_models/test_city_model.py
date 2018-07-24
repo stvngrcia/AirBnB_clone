@@ -48,7 +48,9 @@ class TestCity(unittest.TestCase):
         self.assertEqual(type(self.city1.name), str)
         self.assertEqual(type(self.city1.state_id), str)
 
-    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', "won't work in db")
+    @unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "won't work in db")
     def test_save(self):
         self.city1.save()
         self.assertNotEqual(self.city1.created_at, self.city1.updated_at)

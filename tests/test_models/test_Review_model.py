@@ -51,7 +51,9 @@ class TestReview(unittest.TestCase):
         self.assertEqual(type(self.rev1.place_id), str)
         self.assertEqual(type(self.rev1.user_id), str)
 
-    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', "won't work in db")
+    @unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "won't work in db")
     def test_save(self):
         self.rev1.save()
         self.assertNotEqual(self.rev1.created_at, self.rev1.updated_at)
