@@ -36,17 +36,16 @@ class Place(BaseModel, Base):
     amenities = relationship("Amenity ", secondary=place_amenity,
                              viewonly=False)
 
+    @property
+    def reviews(self):
+        """This is the property setter for reviews
+        Return:
+            all object in list
+        """
+        get_all = models.storage.all("Review").values()
+        return [obj for obj in get_all if obj.place_id == self.id]
 
     if getenv("HBNB_TYPE_STORAGE") != "db":
-        @property
-        def reviews(self):
-            """This is the property setter for reviews
-            Return:
-            all object in list
-            """
-            get_all = models.storage.all("Review").values()
-            return [obj for obj in get_all if obj.place_id == self.id]
-
         @property
         def amenities(self):
             """This is the property setter for reviews
