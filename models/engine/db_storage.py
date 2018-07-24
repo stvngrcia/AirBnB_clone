@@ -6,7 +6,7 @@
 from os import getenv
 import models
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
 
 class DBStorage:
@@ -25,7 +25,7 @@ class DBStorage:
         pwd = getenv('HBNB_MYSQL_PWD')
         host = getenv('HBNB_MYSQL_HOST')
         db = getenv('HBNB_MYSQL_DB')
-        
+
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
                  user, pwd, host, db), pool_pre_ping=True)
         # Create all the tables in the database which are

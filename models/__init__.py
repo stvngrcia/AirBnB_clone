@@ -14,14 +14,14 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
-temp_cls = {"State": State, "City": City}
+temp_cls = {"State": State, "City": City, "User": User}
 
 classes = {"User": User, "BaseModel": BaseModel,
            "Place": Place, "State": State,
            "City": City, "Amenity": Amenity,
            "Review": Review}
 
-if os.environ.get("HBNB_TYPE_STORAGE") == "db": 
+if os.environ.get("HBNB_TYPE_STORAGE") == "db":
     storage = DBStorage()
 else:
     storage = FileStorage()
