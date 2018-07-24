@@ -5,20 +5,24 @@
 
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String
+from models import storage_type
+
 
 class State(BaseModel, Base):
     '''
         Implementation for the State.
     '''
-    __tablename__ = 'states'
-    name = Column(String(128), nullable=False)
-    cities = relationship("City", cascade="all, delete-orphan", backref="state")
-
-    @getter
-    def get_cities(self):
-        return
-
-    '''Getter attribute cities returns list of City instances
-        where state_id = State.id
-        creates FileStorage relationship between State and City
-    '''
+    if (storage_type == 'db'):
+        __tablename__ = 'states'
+        name = Column(String(128), nullable=False)
+        cities = relationship("City", cascade="all, delete-orphan", backref="state")
+    else:
+        name = ""
+        @property
+        def get_cities(self):
+            city_list = []
+            for val in storage.all(City).values():
+                if val.state_id == self.id:
+                    city_list.append(val)
+            return city_list
