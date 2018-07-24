@@ -41,18 +41,19 @@ class DBStorage:
             Return the dictionary
         '''
         dict_db = {}
-
         if cls != None:
-            entry = self.__session.query(models.classes[cls]).all()
+            entry = self.__session.query(models.temp_cls[cls]).all()
             for obj in entry:
-                print("{}.{}".format(obj.__class__.__name__, obj.id))
+                # under the hood, sqlalchemy converts entry to objects
+                # allowing access to object attributes
+                key = "{}.{}".format(obj.__class__.__name__, obj.id)
                 dict_db[key] = obj
         else:
-            for cls_name in models.classes:
-                if cls_name != "BaseModel": 
-                    self.__session.query().all()
-                    print("{}.{}".format(cls_name.__class__.__name__, cls_name.id))
-                    dict_db[key] = obj
+            for k, v in models.temp_cls.items():
+                if k != "BaseModel":
+                    for obj in self.__session.query(v).all():
+                        key = "{}.{}".format(obj.__class__.__name__, obj.id)
+                        dict_db[key] = obj
         return dict_db
 
     def new(self, obj):

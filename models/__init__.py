@@ -14,6 +14,8 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+temp_cls = {"State": State, "City": City}
+
 classes = {"User": User, "BaseModel": BaseModel,
            "Place": Place, "State": State,
            "City": City, "Amenity": Amenity,

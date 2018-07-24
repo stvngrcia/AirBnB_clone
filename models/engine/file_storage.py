@@ -17,8 +17,15 @@ class FileStorage:
         '''
             Return the dictionary
         '''
-        # need to add an if/else statement for if it is cls? Robert says
-        return self.__objects
+        dict_fs = {}
+
+        if cls == None:
+            return self.__objects
+        else:
+            for k, v in self.__objects.items():
+                if v.__class__.__name__ == cls:
+                    dict_fs[k] = v
+            return dict_fs
 
     def new(self, obj):
         '''
