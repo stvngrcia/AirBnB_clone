@@ -17,13 +17,21 @@ class FileStorage:
         '''
             Return the dictionary
         '''
-        return self.__objects
+        dict_fs = {}
+
+        if cls == None:
+            return self.__objects
+        else:
+            for k, v in self.__objects.items():
+                if v.__class__.__name__ == cls:
+                    dict_fs[k] = v
+            return dict_fs
 
     def new(self, obj):
         '''
             Set in __objects the obj with key <obj class name>.id
-            Aguments:
-                obj : An instance object
+            Arguments:
+                obj : An instance object.
         '''
         key = str(obj.__class__.__name__) + "." + str(obj.id)
         value_dict = obj
@@ -56,7 +64,7 @@ class FileStorage:
 
     def delete(self, obj=None):
         '''
-        Test delete feature
+            Delete object from __object if exists
         '''
         if obj is not None:
             key = str(obj.__class__.__name__) + "." + str(obj.id)

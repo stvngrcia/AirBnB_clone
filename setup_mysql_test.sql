@@ -1,4 +1,4 @@
--- Prepares a MySQL server for the projact
+-- prepares MySQL server for testing purposes
 
 CREATE DATABASE IF NOT EXISTS hbnb_test_db;
 CREATE USER IF NOT EXISTS hbnb_test@localhost IDENTIFIED BY 'hbnb_test_pwd';
