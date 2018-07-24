@@ -16,13 +16,6 @@ fs.new(new_state)
 fs.save()
 print("New State: {}".format(new_state))
 
-n_state = State()
-n_state.name = "Florida"
-fs.new(n_state)
-fs.save()
-print("New State: {}".format(n_state))
-
-
 # Delete the new State
 fs.delete(new_state)
 
