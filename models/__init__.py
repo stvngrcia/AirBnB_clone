@@ -13,18 +13,17 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
-tmp_classes = {"State": State}
-
 classes = {"User": User, "BaseModel": BaseModel,
            "Place": Place, "State": State,
            "City": City, "Amenity": Amenity,
            "Review": Review}
 
-storage_type = getenv('HBNB_TYPE_STORAGE')
 
-if (storage_type == 'db'):
+if getenv('HBNB_TYPE_STORAGE') == 'db':
     storage = DBStorage()
     storage.reload()
 else:
     storage = FileStorage()
     storage.reload()
+
+

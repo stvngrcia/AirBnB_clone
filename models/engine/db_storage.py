@@ -45,16 +45,21 @@ class DBStorage:
         obj_dict = {}
         # cls = str
         if cls is not None:
-            for val in self.__session.query(models.tmp_classes[cls]):
-                '''Should return class name.object id'''
-                key = str(val.__class__.__name__) + "." + str(val.id)
-                obj_dict[key] = val
-                return obj_dict
-        else:
-            for val in self.__session.query(State, City):
+            objects = self.__session.query(eval(cls)).all()
+            for val in objects:
                 key = val.__class__.__name__ + "." + val.id
                 obj_dict[key] = val
-                return obj_dict
+            return obj_dict
+        else:
+            for key, val in models.classes.items():
+                try:
+                    objects = self.__session.query(models.classes[key])
+                    for obj in objects:
+                        k = obj.__class__.__name__ + "." + obj.id
+                        obj_dict[k] = obj
+                except:
+                    continue
+            return obj_dict
 
     def new(self, obj):
         self.__session.add(obj)
