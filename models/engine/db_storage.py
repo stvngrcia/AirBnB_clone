@@ -8,6 +8,7 @@ import sys
 from models.base_model import BaseModel, Base
 from models.state import State
 from models.city import City
+from models.user import User
 from sqlalchemy import Column, Integer, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -43,7 +44,6 @@ class DBStorage:
 
     def all(self, cls=None):
         obj_dict = {}
-        # cls = str
         if cls is not None:
             objects = self.__session.query(eval(cls)).all()
             for val in objects:

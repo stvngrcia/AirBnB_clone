@@ -2,14 +2,26 @@
 '''
     Implementation of the User class which inherits from BaseModel
 '''
-from models.base_model import BaseModel
 
+from os import getenv
+from models.base_model import BaseModel, Base
+from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String
 
-class User(BaseModel):
+storage_type = getenv('HBNB_TYPE_STORAGE')
+
+class User(BaseModel, Base):
     '''
         Definition of the User class
     '''
-    email = ""
-    password = ""
-    first_name = ""
-    last_name = ""
+    __tablename__ = 'users'
+    if (storage_type == 'db'):
+        email = Column(String(128), nullable=False)
+        password = Column(String(128), nullable=False)
+        first_name = Column(String(128), nullable=True)
+        last_name = Column(String(128), nullable=True)
+    else:
+        email = ""
+        password = ""
+        first_name = ""
+        last_name = ""

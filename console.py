@@ -124,7 +124,6 @@ class HBNBCommand(cmd.Cmd):
         obj_list = []
 
         args = shlex.split(args)
-        print("Args :{}".format(len(args)))
         if len(args) == 0:
             objects = storage.all()
 
