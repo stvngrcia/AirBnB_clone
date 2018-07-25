@@ -43,6 +43,9 @@ class BaseModel:
         else:
             self.updated_at = datetime.now()
 
+        if "id" not in kwargs:
+            self.id = str(uuid.uuid4())
+
         for key, val in kwargs.items():
             if "__class__" not in key:
                 setattr(self, key, val)
