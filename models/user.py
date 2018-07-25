@@ -21,8 +21,16 @@ class User(BaseModel, Base):
         first_name = Column(String(128), nullable=True)
         last_name = Column(String(128), nullable=True)
         places = relationship("Place", cascade="all, delete-orphan", backref="user")
+        reviews = relationship("Review", cascade="all, delete-orphan", backref="user")
     else:
         email = ""
         password = ""
         first_name = ""
         last_name = ""
+        @property
+        def get_reviews(self):
+            review_list = []
+            for val in storage.all(Review).values():
+                if val.place_id == place.id:
+                    review_list.append(val)
+            return review_list
