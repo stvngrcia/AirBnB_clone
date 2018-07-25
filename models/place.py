@@ -10,9 +10,10 @@ import models
 
 place_amenity = Table(
     "place_amenity", Base.metadata,
-    Column("place_id", String(60), ForeignKey("places.id"), nullable=False),
+    Column("place_id", String(60), ForeignKey("places.id"),
+           primary_key=True, nullable=False),
     Column("amenity_id", String(60), ForeignKey("amenities.id"),
-           nullable=False))
+           primary_key=True, nullable=False))
 
 
 class Place(BaseModel, Base):
@@ -45,23 +46,20 @@ class Place(BaseModel, Base):
         get_all = models.storage.all("Review").values()
         return [obj for obj in get_all if obj.place_id == self.id]
 
-    if getenv("HBNB_TYPE_STORAGE") != "db":
-        @property
-        def amenities(self):
-            """This is the property setter for reviews
-            Return:
+    @property
+    def amenities(self):
+        """This is the property setter for reviews
+        Return:
             all object in list
-            """
-            all_amenities = []
-            for amenity in self.amenity_ids:
-                amenity_inst = models.storage.all('Review').values()
-                all_amenities = [inst for inst in amenity_inst]
-            return all_amenities
+        """
+        all_amenities = []
+        for amenity in self.amenity_ids:
+            amenity_inst = models.storage.all('Review').values()
+            all_amenities = [inst for inst in amenity_inst]
+        return all_amenities
 
-            #return self.amenity_ids
-
-        @amenities.setter
-        def amenities(self, obj=None):
-            """setting for amenities"""
-            if type(obj) is Amenity:
-                self.amenity_ids.append(obj.id)
+    @amenities.setter
+    def amenities(self, obj=None):
+        """setting for amenities"""
+        if type(obj) is Amenity:
+            self.amenity_ids.append(obj.id)
