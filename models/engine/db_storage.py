@@ -47,10 +47,9 @@ class DBStorage:
         if cls is not None:
             for val in self.__session.query(models.tmp_classes[cls]):
                 '''Should return class name.object id'''
-                key = val.__class__.__name__ + "." + val.id
+                key = str(val.__class__.__name__) + "." + str(val.id)
                 obj_dict[key] = val
                 return obj_dict
-
         else:
             for val in self.__session.query(State, City):
                 key = val.__class__.__name__ + "." + val.id

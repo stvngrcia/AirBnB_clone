@@ -42,14 +42,27 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 0:
             print("** class name missing **")
             return
+
         try:
             args = shlex.split(args)
-            new_instance = eval(args[0])()
+            item_class = args[0]
+            new_instance = eval(item_class)()
+#            new_instance.save()
+            if len(args) != 1:
+                attributes = args[1:]
+                for items in attributes:
+                    items.replace(" ", "_")
+                    pair = items.split('=')
+                    if hasattr(self, pair[1]):
+                        try:
+                            pair[1] = eval(pair[1])
+                        except (KeyError, NameError):
+                            pass
+                    setattr(new_instance, pair[0], pair[1])
             new_instance.save()
             print(new_instance.id)
-
-        except:
-            print("** class doesn't exist **")
+        except KeyError:
+            print("**class doesn't exist**")
 
     def do_show(self, args):
         '''
@@ -109,18 +122,16 @@ class HBNBCommand(cmd.Cmd):
             based or not on the class name.
         '''
         obj_list = []
-        objects = storage.all()
+        args = shlex.split(args)
+        objects = storage.all(args[0])
+
         try:
             if len(args) != 0:
-                eval(args)
+                eval(args[0])
         except NameError:
             print("** class doesn't exist **")
             return
         for key, val in objects.items():
-            if len(args) != 0:
-                if type(val) is eval(args):
-                    obj_list.append(val)
-            else:
                 obj_list.append(val)
 
         print(obj_list)
