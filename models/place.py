@@ -46,20 +46,21 @@ class Place(BaseModel, Base):
         get_all = models.storage.all("Review").values()
         return [obj for obj in get_all if obj.place_id == self.id]
 
-    @property
-    def amenities(self):
-        """This is the property setter for reviews
-        Return:
-            all object in list
-        """
-        all_amenities = []
-        for amenity in self.amenity_ids:
-            amenity_inst = models.storage.all('Review').values()
-            all_amenities = [inst for inst in amenity_inst]
-        return all_amenities
+    if getenv("HBNB_TYPE_STORAGE") != "db":
+        @property
+        def amenities(self):
+            """This is the property setter for reviews
+            Return:
+                all object in list
+            """
+            all_amenities = []
+            for amenity in self.amenity_ids:
+                amenity_inst = models.storage.all('Review').values()
+                all_amenities = [inst for inst in amenity_inst]
+            return all_amenities
 
-    @amenities.setter
-    def amenities(self, obj=None):
-        """setting for amenities"""
-        if type(obj) is Amenity:
-            self.amenity_ids.append(obj.id)
+        @amenities.setter
+        def amenities(self, obj=None):
+            """setting for amenities"""
+            if type(obj) is Amenity:
+                self.amenity_ids.append(obj.id)
