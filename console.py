@@ -13,7 +13,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-
+from models import storage
 
 class HBNBCommand(cmd.Cmd):
     '''
@@ -42,27 +42,14 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 0:
             print("** class name missing **")
             return
-
         try:
             args = shlex.split(args)
-            item_class = args[0]
-            new_instance = eval(item_class)()
-#            new_instance.save()
-            if len(args) != 1:
-                attributes = args[1:]
-                for items in attributes:
-                    items.replace(" ", "_")
-                    pair = items.split('=')
-                    if hasattr(self, pair[1]):
-                        try:
-                            pair[1] = eval(pair[1])
-                        except (KeyError, NameError):
-                            pass
-                    setattr(new_instance, pair[0], pair[1])
+            new_instance = eval(args[0])()
             new_instance.save()
             print(new_instance.id)
-        except KeyError:
-            print("**class doesn't exist**")
+
+        except:
+            print("** class doesn't exist **")
 
     def do_show(self, args):
         '''
@@ -76,8 +63,6 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 1:
             print("** instance id missing **")
             return
-        storage = FileStorage()
-        storage.reload()
         obj_dict = storage.all()
         try:
             eval(args[0])
@@ -105,8 +90,6 @@ class HBNBCommand(cmd.Cmd):
             return
         class_name = args[0]
         class_id = args[1]
-        storage = FileStorage()
-        storage.reload()
         obj_dict = storage.all()
         try:
             eval(class_name)
@@ -126,8 +109,7 @@ class HBNBCommand(cmd.Cmd):
             based or not on the class name.
         '''
         obj_list = []
-        models.storage.reload(args)
-        objects = models.storage.all(args)
+        objects = storage.all()
         try:
             if len(args) != 0:
                 eval(args)
@@ -148,8 +130,6 @@ class HBNBCommand(cmd.Cmd):
             Update an instance based on the class name and id
             sent as args.
         '''
-        storage = FileStorage()
-        storage.reload()
         args = shlex.split(args)
         if len(args) == 0:
             print("** class name missing **")
@@ -194,8 +174,6 @@ class HBNBCommand(cmd.Cmd):
             Counts/retrieves the number of instances.
         '''
         obj_list = []
-        storage = FileStorage()
-        storage.reload()
         objects = storage.all()
         try:
             if len(args) != 0:
