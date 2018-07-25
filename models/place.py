@@ -28,6 +28,7 @@ class Place(BaseModel, Base):
         price_by_night = Column(Integer, default=0, nullable=False)
         latitude = Column(FLOAT(precision=10, scale=2), nullable=True)
         longitude = Column(FLOAT(precision=10, scale=2), nullable=True)
+        reviews = relationship("Review", cascade="all, delete-orphan", backref="place")
     else:
         city_id = ""
         user_id = ""
@@ -40,3 +41,10 @@ class Place(BaseModel, Base):
         latitude = 0.0
         longitude = 0.0
         amenity_ids = []
+        @property
+        def get_reviews(self):
+            review_list = []
+            for val in storage.all(Review).values():
+                if val.place_id == place.id:
+                    review_list.append(val)
+            return review_list
