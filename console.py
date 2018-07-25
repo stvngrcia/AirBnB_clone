@@ -122,8 +122,14 @@ class HBNBCommand(cmd.Cmd):
             based or not on the class name.
         '''
         obj_list = []
+
         args = shlex.split(args)
-        objects = storage.all(args[0])
+        print("Args :{}".format(len(args)))
+        if len(args) == 0:
+            objects = storage.all()
+
+        else:
+            objects = storage.all(args[0])
 
         try:
             if len(args) != 0:
