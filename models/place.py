@@ -7,8 +7,7 @@ from os import getenv
 from sqlalchemy import ForeignKey
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, Integer, String, Table, MetaData
-from sqlalchemy.dialects.mysql import FLOAT
+from sqlalchemy import Column, Integer, String, Table, MetaData, Float
 import models
 
 storage_type = getenv('HBNB_TYPE_STORAGE')
@@ -42,8 +41,8 @@ class Place(BaseModel, Base):
         number_bathrooms = Column(Integer, default=0, nullable=False)
         max_guest = Column(Integer, default=0, nullable=False)
         price_by_night = Column(Integer, default=0, nullable=False)
-        latitude = Column(FLOAT(precision=10, scale=2), nullable=True)
-        longitude = Column(FLOAT(precision=10, scale=2), nullable=True)
+        latitude = Column(Float, nullable=True)
+        longitude = Column(Float, nullable=True)
         reviews = relationship("Review", cascade="all, delete-orphan", backref="place")
         amenities = relationship("Amenity", secondary=place_amenity, viewonly=False)
 
