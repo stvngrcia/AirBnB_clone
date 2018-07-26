@@ -6,11 +6,8 @@
 from os import getenv
 import sqlalchemy
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, Integer, String, create_engine, DateTime
-from sqlalchemy import ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, String
 from models.base_model import BaseModel, Base
-from sqlalchemy import ForeignKey
 
 storage_type = getenv('HBNB_TYPE_STORAGE')
 
@@ -25,7 +22,8 @@ class User(BaseModel, Base):
     last_name = Column(String(128), nullable=True)
 
     if (storage_type == 'db'):
-        reviews = relationship("Review", cascade="all, delete-orphan", backref="user")
+        reviews = relationship("Review", cascade="all, delete-orphan")
+        places = relationship("Place", cascade="all, delete-orphan")
     else:
         email = ""
         password = ""
