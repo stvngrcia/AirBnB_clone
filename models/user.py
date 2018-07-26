@@ -22,8 +22,8 @@ class User(BaseModel, Base):
     last_name = Column(String(128), nullable=True)
 
     if (storage_type == 'db'):
-        reviews = relationship("Review", cascade="all, delete-orphan", back-ref="cities")
-        places = relationship("Place", cascade="all, delete-orphan", back-ref="user")
+        reviews = relationship("Review", cascade="all, delete-orphan", backref="cities")
+        places = relationship("Place", cascade="all, delete-orphan", backref="user")
     else:
         email = ""
         password = ""
