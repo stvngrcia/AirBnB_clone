@@ -44,19 +44,6 @@ class Place(BaseModel, Base):
         longitude = Column(FLOAT(precision=10, scale=2), nullable=True)
         reviews = relationship("Review", cascade="all, delete-orphan", backref="place")
         amenities = relationship("Amenity", secondary = "places_amenity", viewonly=False)
-'''
-Update Place class:
-for DBStorage: class attribute amenities must represent a relationship with the class Amenity but also a\
-s secondary to place_amenity with option viewonly=False (place_amenity has been define previously)
-for FileStorage:
-Getter attribute amenities that returns the list of Amenity instances based on the attribute amenity_ids\
- that contains all Amenity.id linked to the Place
-Setter attribute amenities that handles append method for adding an Amenity.id to the attribute amenity_\
-ids. This method should accept only Amenity object, otherwise, do nothing.
-
-
-'''
-
 
     else:
         city_id = ""
