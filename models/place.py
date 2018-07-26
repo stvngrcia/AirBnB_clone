@@ -7,7 +7,7 @@ from os import getenv
 from sqlalchemy import ForeignKey
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Table
 from sqlalchemy.dialects.mysql import FLOAT
 
 storage_type = getenv('HBNB_TYPE_STORAGE')
