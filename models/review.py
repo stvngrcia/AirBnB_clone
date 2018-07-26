@@ -3,18 +3,26 @@
     Implementation of the Review class
 '''
 
-from models.base_model import BaseModel
+from os import getenv
+import sqlalchemy
+from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String, create_engine, DateTime
+from sqlalchemy import ForeignKey
+from sqlalchemy.ext.declarative import declarative_base
+from models.base_model import BaseModel, Base
+from sqlalchemy import ForeignKey
 
+storage_type = getenv('HBNB_TYPE_STORAGE')
 
 class Review(BaseModel, Base):
     '''
         Implementation for the Review.
     '''
-    __tablename__ = 'review'
+    __tablename__ = 'reviews'
     if (storage_type == 'db'):
-        place_id = Column(String(60), nullable=False ForeignKey("places.id"))
-        user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
         text = Column(String(1024), nullable=False)
+        place_id = Column(String(60), ForeignKey("places.id"), nullable=False)
+        user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
 
     else:
         place_id = ""
