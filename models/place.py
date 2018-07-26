@@ -12,6 +12,20 @@ from sqlalchemy.dialects.mysql import FLOAT
 
 storage_type = getenv('HBNB_TYPE_STORAGE')
 
+place_amenity = Table("place_amenity", metadata,
+                      Column('place_id',
+                             String(60),
+                             ForeignKey("places.id"),
+                             nullable=False,
+                             primary_key=True),
+                      Column('amenity_id',
+                             String(60),
+                             ForeignKey("amenities.id"),
+                             nullable=False,
+                             primary_key=True),
+                  )
+
+
 class Place(BaseModel, Base):
     '''
         Define the class Place that inherits from BaseModel.
@@ -29,6 +43,21 @@ class Place(BaseModel, Base):
         latitude = Column(FLOAT(precision=10, scale=2), nullable=True)
         longitude = Column(FLOAT(precision=10, scale=2), nullable=True)
         reviews = relationship("Review", cascade="all, delete-orphan", backref="place")
+        amenities = relationship("Amenity", secondary = secondary="places_amenity", viewonly=False)
+'''
+Update Place class:
+for DBStorage: class attribute amenities must represent a relationship with the class Amenity but also a\
+s secondary to place_amenity with option viewonly=False (place_amenity has been define previously)
+for FileStorage:
+Getter attribute amenities that returns the list of Amenity instances based on the attribute amenity_ids\
+ that contains all Amenity.id linked to the Place
+Setter attribute amenities that handles append method for adding an Amenity.id to the attribute amenity_\
+ids. This method should accept only Amenity object, otherwise, do nothing.
+
+
+'''
+
+
     else:
         city_id = ""
         user_id = ""
@@ -48,3 +77,10 @@ class Place(BaseModel, Base):
                 if val.place_id == place.id:
                     review_list.append(val)
             return review_list
+        @property
+        def get_amenities(self):
+            review_list = []
+            for val in storage.all(Amenity).values():
+                if val.place_id == place.id:
+                    amenity_list.append(val)
+            return amenity_list
