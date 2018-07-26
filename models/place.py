@@ -43,7 +43,7 @@ class Place(BaseModel, Base):
         latitude = Column(FLOAT(precision=10, scale=2), nullable=True)
         longitude = Column(FLOAT(precision=10, scale=2), nullable=True)
         reviews = relationship("Review", cascade="all, delete-orphan", backref="place")
-        amenities = relationship("Amenity", secondary = secondary="places_amenity", viewonly=False)
+        amenities = relationship("Amenity", secondary = "places_amenity", viewonly=False)
 '''
 Update Place class:
 for DBStorage: class attribute amenities must represent a relationship with the class Amenity but also a\
