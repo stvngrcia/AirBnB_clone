@@ -4,6 +4,8 @@
     All the test for the user model are implemented here.
 '''
 
+import os
+import pep8
 import unittest
 from models.base_model import BaseModel
 from models.review import Review
@@ -43,3 +45,17 @@ class TestReview(unittest.TestCase):
         self.assertIsInstance(place_id, str)
         self.assertIsInstance(user_id, str)
         self.assertIsInstance(text, str)
+
+    def test_is_subclass(self):
+        self.assertTrue(issubclass(self.rev1.__class__, BaseModel), True)
+
+    def test_checking_for_functions(self):
+        self.assertIsNotNone(Review.__doc__)
+
+    def test_has_attributes(self):
+        self.assertTrue('id' in self.rev1.__dict__)
+        self.assertTrue('created_at' in self.rev1.__dict__)
+        self.assertTrue('updated_at' in self.rev1.__dict__)
+        self.assertTrue('place_id' in self.rev1.__dict__)
+        self.assertTrue('text' in self.rev1.__dict__)
+        self.assertTrue('user_id' in self.rev1.__dict__)
