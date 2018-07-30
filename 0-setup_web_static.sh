@@ -12,5 +12,6 @@ echo -e '<html>\n<head>\nHBnB</head>\n<body>\nHolberton School\n</body>\n</html>
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 # give ownership to the group and user
 sudo chown -R ubuntu:ubuntu /data/
-sudo sed -i "38i \\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}\n\n" /etc/nginx/sites-enabled/default
+# creating alias
+sudo sed -i "37i \\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}\n\n" /etc/nginx/sites-enabled/default
 sudo service nginx restart
