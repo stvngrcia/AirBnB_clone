@@ -7,7 +7,7 @@ sudo apt-get -y install nginx
 sudo mkdir -p /data/web_static/shared/
 sudo mkdir -p /data/web_static/releases/test/
 # create simple file to test
-echo "<html>\n<head>\nHBnB</head>\n<body>\nHolberton School\n</body>\n</html>" | sudo tee /data/web_static/releases/test/index.html
+echo -e '<html>\n<head>\nHBnB</head>\n<body>\nHolberton School\n</body>\n</html>' | sudo tee /data/web_static/releases/test/index.html
 # create symbolic link
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 # give ownership to the group and user
