@@ -4,15 +4,15 @@ import os
 from fabric.api import *
 
 env.user = "ubuntu"
-env.hosts= ['35.237.55.203', '104.196.13.174']
+env.hosts = ['35.237.55.203', '104.196.13.174']
 
 
 def do_deploy(archive_path):
     """distributes an archive to your web servers, using the function"""
     if (os.path.isfile(archive_path) is False):
         return False
-    path = archive_path.split("/")[-1]
-    target = "/data/web_static/releases/" + path.split(".")[0]
+    path = archive_path.split('/')[1]
+    target = "/data/web_static/releases/" + path
     try:
         put(archive_path, "/tmp/")
         run("sudo mkdir -p {}/".format(target))
