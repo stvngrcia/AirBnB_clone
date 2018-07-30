@@ -13,5 +13,5 @@ sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 # give ownership to the group and user
 sudo chown -R ubuntu:ubuntu /data/
 # creating alias
-sudo sed -i "37i \\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}\n\n" /etc/nginx/sites-enabled/default
+sudo sed -i "38i location /hbnb_static {\nalias /data/web_static/current;\n}" /etc/nginx/sites-enabled/default
 sudo service nginx restart
