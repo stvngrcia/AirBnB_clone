@@ -53,11 +53,7 @@ class Place(BaseModel, Base):
             Return:
                 all object in list
             """
-            all_amenities = []
-            for amenity in self.amenity_ids:
-                amenity_inst = models.storage.all('Review').values()
-                all_amenities = [inst for inst in amenity_inst]
-            return all_amenities
+            return self.amenity_ids
 
         @amenities.setter
         def amenities(self, obj=None):
