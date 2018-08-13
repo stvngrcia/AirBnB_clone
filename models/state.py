@@ -5,6 +5,8 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer
 from sqlalchemy.orm import relationship
+from models.city import City
+import os
 import models
 
 
@@ -12,16 +14,17 @@ class State(BaseModel, Base):
     '''
         Implementation for the State.
     '''
-    __tablename__ = "states"
-    name = Column(String(128), nullable=False)
-    cities = relationship("City", backref="state",
-                          cascade="all, delete-orphan")
+    __tablename__ = 'states'
+    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+        name = Column(String(128), nullable=False)
+        cities = relationship("City", passive_deletes=True, backref="state")
+    else:
+        name = ""
 
-    @property
-    def cities(self):
-        """This is the property setter for cities
-        Return:
-            all object in list
-        """
-        get_all = models.storage.all("City").values()
-        return [obj for obj in get_all if obj.state_id == self.id]
+        @property
+        def cities(self):
+            """
+            """
+            cities = [v for k, v in models.storage.all().items()
+                      if 'City' in k and v.state_id == self.id]
+            return cities

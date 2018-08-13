@@ -12,8 +12,12 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
-classes = [User, State, City, Place, Review, Amenity]
-
+classes = {"User" : User,
+           "State" : State,
+           "City" : City,
+           "Place" : Place,
+           "Review" : Review,
+           "Amenity" : Amenity}
 
 class DBStorage:
     """this is the Databse storage
@@ -40,15 +44,15 @@ class DBStorage:
             returns the dictionary of the object
         """
         obj = {}
+        clss = [value for key, value in classes.items()]
         if cls:
-            for value in self.__session.query(cls):
+            if type(cls) == str:
+                cls = classes[cls]
+            clss = [cls]
+        for one_class in clss:
+            for value in self.__session.query(one_class):
                 key = str(value.__class__.__name__) + "." + str(value.id)
                 obj[key] = value
-        else:
-            for one_class in classes:
-                for value in self.__session.query(one_class):
-                    key = str(value.__class__.__name__) + "." + str(value.id)
-                    obj[key] = value
         return obj
 
     def new(self, obj):
