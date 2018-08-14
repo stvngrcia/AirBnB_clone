@@ -17,13 +17,12 @@ class FileStorage:
         '''
             Return the dictionary
         '''
-        objs = {}
         if cls is None:
             return self.__objects
-        for key, value in FileStorage.__objects.items():
-            if cls.__name__ == value.__class__.__name__:
-                objs[key] = value
-                return objs
+        else:
+            objs = {obj: key for obj, key in self.__objects.items()
+                    if type(key) == cls}
+            return (objs)
 
     def new(self, obj):
         '''
