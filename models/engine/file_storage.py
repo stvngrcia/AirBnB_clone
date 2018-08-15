@@ -22,7 +22,7 @@ class FileStorage:
         else:
             objs = {obj: key for obj, key in self.__objects.items()
                     if type(key) == cls}
-            return (objs)
+        return objs
 
     def new(self, obj):
         '''

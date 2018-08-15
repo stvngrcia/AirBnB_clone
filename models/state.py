@@ -24,12 +24,8 @@ class State(BaseModel, Base):
         @property
         def cities(self):
             """
+            Return all cities
             """
-            city_list = []
-            for key, val in models.storage.all().items():
-                try:
-                    if val.state_id == self.id:
-                        city_list.append(val)
-                except AttributeError:
-                    pass
-            return city_list
+            cities = [v for k, v in models.storage.all().items()
+                      if 'City' in k and v.state_id == self.id]
+            return cities
