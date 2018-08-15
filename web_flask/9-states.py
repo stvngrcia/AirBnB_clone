@@ -38,5 +38,6 @@ def states_id(id):
         state = None
     return render_template('9-states.html', state=state)
 
+
 if __name__ == "__main__":
     app.run()
