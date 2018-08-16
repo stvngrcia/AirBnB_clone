@@ -1,45 +1,66 @@
 #!/usr/bin/python3
 
-'''
-    All the test for the user model are implemented here.
-'''
-
 import unittest
-from models.base_model import BaseModel
+import os
+import pep8
 from models.review import Review
+from models.base_model import BaseModel
 
 
 class TestReview(unittest.TestCase):
-    '''
-        Testing Review class
-    '''
 
-    def test_Review_inheritance(self):
-        '''
-            tests that the Review class Inherits from BaseModel
-        '''
-        new_review = Review()
-        self.assertIsInstance(new_review, BaseModel)
+    @classmethod
+    def setUpClass(cls):
+        cls.rev1 = Review()
+        cls.rev1.place_id = "Raleigh"
+        cls.rev1.user_id = "Greg"
+        cls.rev1.text = "Grade A"
 
-    def test_Review_attributes(self):
-        '''
-            Test that Review class has place_id, user_id and text
-            attributes.
-        '''
-        new_review = Review()
-        self.assertTrue("place_id" in new_review.__dir__())
-        self.assertTrue("user_id" in new_review.__dir__())
-        self.assertTrue("text" in new_review.__dir__())
+    @classmethod
+    def tearDownClass(cls):
+        del cls.rev1
+        try:
+            os.remove("file.json")
+        except FileNotFoundError:
+            pass
 
-    def test_Review_attributes(self):
-        '''
-            Test that Review class has place_id, user_id and text
-            attributes.
-        '''
-        new_review = Review()
-        place_id = getattr(new_review, "place_id")
-        user_id = getattr(new_review, "user_id")
-        text = getattr(new_review, "text")
-        self.assertIsInstance(place_id, str)
-        self.assertIsInstance(user_id, str)
-        self.assertIsInstance(text, str)
+    def test_style_check(self):
+        """
+        Tests pep8 style
+        """
+        style = pep8.StyleGuide(quiet=True)
+        p = style.check_files(['models/review.py'])
+        self.assertEqual(p.total_errors, 0, "fix pep8")
+
+    def test_is_subclass(self):
+        self.assertTrue(issubclass(self.rev1.__class__, BaseModel), True)
+
+    def test_checking_for_functions(self):
+        self.assertIsNotNone(Review.__doc__)
+
+    def test_has_attributes(self):
+        self.assertTrue('id' in self.rev1.__dict__)
+        self.assertTrue('created_at' in self.rev1.__dict__)
+        self.assertTrue('updated_at' in self.rev1.__dict__)
+        self.assertTrue('place_id' in self.rev1.__dict__)
+        self.assertTrue('text' in self.rev1.__dict__)
+        self.assertTrue('user_id' in self.rev1.__dict__)
+
+    def test_attributes_are_strings(self):
+        self.assertEqual(type(self.rev1.text), str)
+        self.assertEqual(type(self.rev1.place_id), str)
+        self.assertEqual(type(self.rev1.user_id), str)
+
+    @unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "won't work in db")
+    def test_save(self):
+        self.rev1.save()
+        self.assertNotEqual(self.rev1.created_at, self.rev1.updated_at)
+
+    def test_to_dict(self):
+        self.assertEqual('to_dict' in dir(self.rev1), True)
+
+
+if __name__ == "__main__":
+    unittest.main()
