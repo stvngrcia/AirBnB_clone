@@ -13,7 +13,7 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
-    def all(self):
+    def all(self, cls=None):
         '''
             Return the dictionary
         '''
@@ -53,3 +53,15 @@ class FileStorage:
                 FileStorage.__objects[key] = class_name(**val)
         except FileNotFoundError:
             pass
+
+    def delete(self, obj=None):
+        '''
+           Deletes an object from __objects if it's inside.
+        '''
+        if obj is None:
+            return
+        new_dict = {}
+        for key, value in FileStorage.__objects.items():
+            if str(obj.__class__.__name__) + '.' + str(obj.id) != key:
+                new_dict[key] = value
+        FileStorage.__objects = new_dict
